@@ -1,0 +1,56 @@
+<application xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:service="https://msmanaged-na.azure-apim.net/apim/logicflows" xmlns:siena="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11" siena:serviceId="PostmortemInv" xmlns="http://wadl.dev.java.net/2009/02">
+  <doc title="PostmortemInv" />
+  <grammars>
+    <jsonTypes targetNamespace="https://msmanaged-na.azure-apim.net/apim/logicflows" xmlns="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11">
+      <string name="ManualTriggerInput_teamsinvolved_Value_def" />
+      <string name="ManualTriggerInput_PostmortemTitle_Value_def" />
+      <string name="ManualTriggerInput_PostmortemDescription_Value_def" />
+      <string name="ManualTriggerInput_LocationsAffected_Value_def" />
+      <string name="ManualTriggerInput_IncidentStartTime_Value_def" />
+      <string name="ManualTriggerInput_PostmortemStartTime_Value_def" />
+      <string name="ManualTriggerInput_PostmortemEndTime_Value_def" />
+      <string name="ManualTriggerInput_VendorTickets_Value_def" />
+      <object name="ManualTriggerInput">
+        <property name="teamsinvolved_Value" type="string" />
+        <property name="PostmortemTitle_Value" type="string" />
+        <property name="PostmortemDescription_Value" type="string" />
+        <property name="LocationsAffected_Value" type="string" />
+        <property name="IncidentStartTime_Value" type="string" />
+        <property name="PostmortemStartTime_Value" type="string" />
+        <property name="PostmortemEndTime_Value" type="string" />
+        <property name="VendorTickets_Value" type="string" />
+      </object>
+    </jsonTypes>
+  </grammars>
+  <resources siena:authenticationProviderHref="#PowerAppAuth" base="https://msmanaged-na.azure-apim.net/apim/logicflows">
+    <resource path="/{connectionId}/triggers/manual/run">
+      <param style="template" name="connectionId" type="xs:string" required="true" />
+      <method siena:requiresAuthentication="true" name="POST" id="Run">
+        <doc title="Runs a logic flow trigger." />
+        <request>
+          <param style="query" name="api-version" type="xs:string" required="true" fixed="2015-02-01-preview">
+            <doc title="The api version" />
+          </param>
+          <representation mediaType="application/json">
+            <param style="plain" name="teamsinvolved_Value" path="/teamsinvolved_Value" type="xs:string" required="true" />
+            <param style="plain" name="PostmortemTitle_Value" path="/PostmortemTitle_Value" type="xs:string" required="true" />
+            <param style="plain" name="PostmortemDescription_Value" path="/PostmortemDescription_Value" type="xs:string" required="true" />
+            <param style="plain" name="LocationsAffected_Value" path="/LocationsAffected_Value" type="xs:string" required="true" />
+            <param style="plain" name="IncidentStartTime_Value" path="/IncidentStartTime_Value" type="xs:string" required="true" />
+            <param style="plain" name="PostmortemStartTime_Value" path="/PostmortemStartTime_Value" type="xs:string" required="true" />
+            <param style="plain" name="PostmortemEndTime_Value" path="/PostmortemEndTime_Value" type="xs:string" required="true" />
+            <param style="plain" name="VendorTickets_Value" path="/VendorTickets_Value" type="xs:string" required="true" />
+          </representation>
+        </request>
+      </method>
+    </resource>
+  </resources>
+  <authenticationProviders xmlns="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11">
+    <connectionProvider id="PowerAppAuth" siena:connectionProviderId="logicflows" />
+  </authenticationProviders>
+  <template xmlns="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11">
+    <variable name="connectionId">
+      <modifyParams style="template" name="connectionId" attribute="fixed" />
+    </variable>
+  </template>
+</application>

@@ -1,0 +1,415 @@
+CommunicationPage As screen:
+    BackgroundImage: =
+    Fill: =RGBA(26, 26, 26, 1)
+    Height: =Max(App.Height, App.DesignHeight)
+    LoadingSpinnerColor: =RGBA(100, 118, 132, 1)
+    OnHidden: |-
+        =Clear(colAffectedLocations);
+        Clear(colDistros)
+    OnVisible: |-
+        =Set(varSpinner,true);
+        Reset(chkReviewed);
+        Collect(
+            colAffectedLocations,
+            ForAll(
+                DataCardValue7.SelectedItems,
+                {Location: Value}
+            )
+        );
+        Set(varAdditionalRecipients, Concat('QHC - CIM_Communication_Non-Facility',Distro,";"));
+        If(
+            Tickets2.Selected.Priority.Value = "P1",
+            Patch(
+                'QHC - Critical Incident Management',
+                var1,
+                {Next_x0020_Update_x0020_Time: DateAdd( Now(), 185, Minutes )}
+            ),
+            Patch(
+                'QHC - Critical Incident Management',
+                var1,
+                {Next_x0020_Update_x0020_Time: DateAdd( Now(), 365, Minutes )}
+            )
+        );
+        If(
+            var1.Priority.Value = "P1",
+            Set(XXXNextUpdate,Text(DateAdd( Now(), 65, Minutes ),"mm/dd/yyyy hh:mm AM/PM") & " CT"
+            ),
+            Set(XXXNextUpdate,Text(DateAdd( Now(), 245, Minutes ),"mm/dd/yyyy hh:mm AM/PM") & " CT"
+            )
+        );
+        If(var1.Progress.Value = "Completed", Set(XXXNextUpdate,""));
+        If(var1.Progress.Value = "Completed", Set(CompletedTime,Text(var1.DueDate,"mm/dd/yyyy hh:mm AM/PM")&" CT"),Set(CompletedTime,Blank()));
+        Collect(
+            colDistros,
+            ForAll(
+                DataCardValue7.SelectedItems,
+                {Distro: LookUp('QHC - CIM_Communication',Title = Value,Distro)}
+            )
+        );
+        Set(varSpinner,false)
+    Orientation: =If(CommunicationPage.Width < CommunicationPage.Height, Layout.Vertical, Layout.Horizontal)
+    Size: =1 + CountRows(App.SizeBreakpoints) - CountIf(App.SizeBreakpoints, Value >= CommunicationPage.Width)
+    Width: =Max(App.Width, App.DesignWidth)
+
+    Rectangle7_25 As rectangle:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        BorderThickness: =2
+        Fill: =RGBA(56, 67, 75, 1)
+        FocusedBorderColor: =Rectangle7_25.BorderColor
+        Height: =708
+        TabIndex: =0
+        Width: =1366
+        Y: =60
+        ZIndex: =1
+
+    Rectangle1_16 As rectangle:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Fill: =RGBA(90, 106, 119, 1)
+        FocusedBorderColor: =Rectangle1_16.BorderColor
+        Height: =60
+        TabIndex: =0
+        Width: =1366.00
+        X: =0.00
+        ZIndex: =2
+
+    TextBox4_10 As label:
+        Align: =Center
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        FocusedBorderColor: =TextBox4_10.BorderColor
+        Height: =60
+        HoverBorderColor: =TextBox4_10.BorderColor
+        HoverColor: =TextBox4_10.Color
+        HoverFill: =TextBox4_10.Fill
+        PressedBorderColor: =TextBox4_10.BorderColor
+        PressedColor: =TextBox4_10.Color
+        PressedFill: =TextBox4_10.Fill
+        Size: =26.68
+        Text: ="QHC - Critical Incident Console"
+        VerticalAlign: =Middle
+        Width: =1366.00
+        X: =0.00
+        ZIndex: =3
+
+    Rectangle6_30 As rectangle:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Fill: =RGBA(255, 255, 255, .1)
+        FocusedBorderColor: =Rectangle6_30.BorderColor
+        TabIndex: =0
+        Width: =1.33
+        X: =0.00
+        Y: =78.8235294117628
+        ZIndex: =4
+
+    TextBox5_3 As label:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        FocusedBorderColor: =TextBox5_3.BorderColor
+        HoverBorderColor: =TextBox5_3.BorderColor
+        HoverColor: =TextBox5_3.Color
+        HoverFill: =TextBox5_3.Fill
+        PressedBorderColor: =TextBox5_3.BorderColor
+        PressedColor: =TextBox5_3.Color
+        PressedFill: =TextBox5_3.Fill
+        Size: =13
+        Text: =Today()
+        Visible: =false
+        Width: =200.10
+        X: =991.15
+        Y: =15
+        ZIndex: =5
+
+    "'Back Button' As icon.BackArrow":
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Color: =RGBA(197, 203, 207, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Height: =49
+        Icon: =Icon.BackArrow
+        OnSelect: =Back(Fade)
+        Width: =49
+        X: =5
+        Y: =5
+        ZIndex: =6
+
+    Label1 As label:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Height: =49
+        Size: =13
+        Text: =Concatenate("cleonard@3-dtechnology.com;rbutts@3-dtechnology.com;nschussler@3-dtechnology.com;cwilliams@3-dtechnology.com",";",varAdditionalRecipients,";",Concat(Filter('QHC - CIM_Communication',Title in DataCardValue7.SelectedItems.Value),Distro,";"))
+        VerticalAlign: =VerticalAlign.Top
+        Visible: =false
+        Width: =301
+        X: =27
+        Y: =129
+        ZIndex: =7
+
+    Button4 As button:
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Fill: =RGBA(100, 118, 132, 1)
+        FontWeight: =FontWeight.Semibold
+        HoverColor: =RGBA(255, 255, 255, 1)
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(DataSource,None)
+        Size: =15
+        Text: ="Distros"
+        X: =27
+        Y: =712
+        ZIndex: =8
+
+    Rectangle3 As rectangle:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Fill: =RGBA(252, 254, 251, 1)
+        Height: =623
+        Visible: =varSpinner
+        Width: =656
+        X: =355
+        Y: =129
+        ZIndex: =9
+
+    Image3 As image:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Height: =396
+        Image: ='3d_loading'
+        Visible: =varSpinner
+        Width: =443
+        X: =459
+        Y: =233
+        ZIndex: =10
+
+    Rectangle1_22 As rectangle:
+        BorderColor: =RGBA(116, 116, 116, 1)
+        BorderThickness: =2
+        Fill: =RGBA(232, 234, 236, 1)
+        Height: =49
+        Width: =206
+        X: =1158
+        Y: =62
+        ZIndex: =11
+
+    HtmlText1 As htmlViewer:
+        DisplayMode: =DisplayMode.View
+        Fill: =RGBA(243, 245, 245, 1)
+        Font: =Font.Verdana
+        Height: =701
+        HtmlText: |-
+            ="<html xmlns:v=""urn:schemas-microsoft-com:vml"" xmlns:o=""urn:schemas-microsoft-com:office:office"" xmlns:w=""urn:schemas-microsoft-com:office:word"" xmlns:m=""http://schemas.microsoft.com/office/2004/12/omml"" xmlns=""http://www.w3.org/TR/REC-html40""><head><META HTTP-EQUIV=""Content-Type"" CONTENT=""text/html; charset=us-ascii""><meta name=Generator content=""Microsoft Word 15 (filtered medium)""><!--[if !mso]><style>v\:* {behavior:url(#default#VML);}
+            o\:* {behavior:url(#default#VML);}
+            w\:* {behavior:url(#default#VML);}
+            .shape {behavior:url(#default#VML);}
+            </style><![endif]--><style><!--
+            /* Font Definitions */
+            @font-face
+            	{font-family:Verdana;
+            	panose-1:2 4 5 3 5 4 6 3 2 4;}
+            @font-face
+            	{font-family:Verdana;
+            	panose-1:2 15 5 2 2 2 4 3 2 4;}
+            @font-face
+            	{font-family:Verdana;
+            	panose-1:2 11 6 4 3 5 4 4 2 4;}
+            /* Style Definitions */
+            p.MsoNormal, li.MsoNormal, div.MsoNormal
+            	{margin:0in;
+            	font-size:11.0pt;
+            	font-family:""Verdana"",sans-serif;}
+            a:link, span.MsoHyperlink
+            	{mso-style-priority:99;
+            	color:#0563C1;
+            	text-decoration:underline;}
+            span.EmailStyle21
+            	{mso-style-type:personal-reply;
+            	font-family:""Verdana"",sans-serif;
+            	color:windowtext;}
+            .MsoChpDefault
+            	{mso-style-type:export-only;
+            	font-size:11.0pt;}
+            @page WordSection1
+            	{size:8.5in 11.0in;
+            	margin:1.0in 1.0in 1.0in 1.0in;}
+            div.WordSection1
+            	{page:WordSection1;}
+            --></style><!--[if gte mso 9]><xml>
+            <o:shapedefaults v:ext=""edit"" spidmax=""1028"" />
+            </xml><![endif]--><!--[if gte mso 9]><xml>
+            <o:shapelayout v:ext=""edit"">
+            <o:idmap v:ext=""edit"" data=""1"" />
+            </o:shapelayout></xml><![endif]--></head><body lang=EN-US link=""#0563C1"" vlink=""#954F72"" style='word-wrap:break-word'><div class=WordSection1><p class=MsoNormal><o:p>&nbsp;</o:p></p><div align=center><table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 style='max-width:540.75pt;border-collapse:collapse'><tr style='height:.2in'><td width=721 colspan=4 style='width:540.75pt;border:solid #F12535 1.5pt;background:#FF7C80;padding:0in 5.4pt 0in 5.4pt;height:.2in'><p class=MsoNormal align=center style='text-align:center;line-height:105%'><b><span style='font-size:24.0pt;line-height:105%;font-family:""Verdana"",sans-serif'>" & var1.Priority.Value & " - " & var1.Short_x0020_Description & "<span style='color:black'></span><o:p></o:p></span></b></p></td></tr><tr><td width=721 colspan=4 style='width:540.75pt;padding:0in 0in 0in 0in'><p class=MsoNormal><img width=721 height=118 style='width:7.5104in;height:1.2291in' id=""_x0000_i1025"" src=""https://quorumhealth.com/wp-content/uploads/2022/02/Email-Header-Img-People.png""><o:p></o:p></p></td></tr><tr style='height:28.75pt'><td width=721 colspan=4 style='width:540.75pt;padding:0in 5.4pt 0in 5.4pt;height:28.75pt'><p class=MsoNormal align=center style='text-align:center'><b><span style='font-size:20.0pt;font-family:""Verdana"",sans-serif;color:#F12535'>- Major Incident Report -</span></b><o:p></o:p></p></td></tr><tr><td width=721 colspan=4 valign=top style='width:540.75pt;border:solid windowtext 1.0pt;background:#D9D9D9;padding:0in 5.4pt 0in 5.4pt'><p class=MsoNormal align=center style='text-align:center'><b><span style='font-size:12.0pt;font-family:""Verdana"",sans-serif;color:black'>Incident # </span></b><b><span style='font-size:12.0pt;color:black'>" & "<a href='https://dhscprod.service-now.com/nav_to.do?uri=incident.do?sysparm_query=number=" & var1.Incident_x0020_Number & "'>" & var1.Incident_x0020_Number & "</span></b><b><span style='font-size:11.0pt;font-family:""Verdana"",sans-serif'><o:p></o:p></span></b></p></td></tr><tr style='height:.3in'><td width=247 style='width:185.25pt;border:solid windowtext 1.0pt;border-top:none;padding:0in 5.4pt 0in 5.4pt;height:.3in'><p class=MsoNormal><b><span style='font-size:10.0pt;font-family:""Verdana"",sans-serif'>Description</span></b><o:p></o:p></p></td><td width=474 colspan=3 style='width:355.5pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:.3in'><p class=MsoNormal><span style='color:#415464;font-size:10.0pt;font-family:""Verdana"",sans-serif'>" & var1.Title & "<span style='color:#415464'><o:p></o:p></span></span></p></td></tr><tr style='height:.3in'><td width=247 style='width:185.25pt;border:solid windowtext 1.0pt;border-top:none;padding:0in 5.4pt 0in 5.4pt;height:.3in'><p class=MsoNormal><b><span style='font-size:10.0pt;font-family:""Verdana"",sans-serif'>Business Impact</span></b><o:p></o:p></p></td><td width=474 colspan=3 style='width:355.5pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:.3in'><p class=MsoNormal><span style='color:#415464;font-size:10.0pt;font-family:""Verdana"",sans-serif'>" & var1.Description & "<span style='color:#415464'><o:p></o:p></span></span></p></td></tr><tr style='height:.3in'><td width=247 style='width:185.25pt;border:solid windowtext 1.0pt;border-top:none;padding:0in 5.4pt 0in 5.4pt;height:.3in'><p class=MsoNormal><b><span style='font-size:10.0pt;font-family:""Verdana"",sans-serif'>Systems Impacted</span></b><o:p></o:p></p></td><td width=474 colspan=3 style='color:#415464;width:355.5pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:.3in'><p class=MsoNormal><span style='color:#415464; font-size:10.0pt;font-family:""Verdana"",sans-serif'>" & Concat(
+                DataCardValue6.SelectedItems.Value,
+                Value,
+                ", "
+            ) & "<o:p></o:p></p></td></tr><tr style='height:20.1pt'><td width=247 style='width:185.25pt;border:solid windowtext 1.0pt;border-top:none;padding:0in 5.4pt 0in 5.4pt;height:20.1pt'><p class=MsoNormal><b><span style='font-size:10.0pt;font-family:""Verdana"",sans-serif' color:black>Locations Impacted<o:p></o:p></span></b></p></td><td width=474 colspan=3 valign=top style='color:#415464;width:355.5pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:20.1pt'><p class=MsoNormal style='margin-bottom:12.0pt'><span style='color:#415464;font-size:10.0pt;font-family:""Verdana"",sans-serif'>" & "- " & Concat(
+                DataCardValue7.SelectedItems.Value,
+                Value,
+                "<br> - "
+            ) & "</span><o:p></o:p></p></td></tr><tr style='height:.3in'><td width=247 style='width:185.25pt;border:solid windowtext 1.0pt;border-top:none;padding:0in 5.4pt 0in 5.4pt;height:.3in'><p class=MsoNormal><b><span style='font-size:10.0pt;font-family:""Verdana"",sans-serif'>Date &amp; Time Start</span></b><o:p></o:p></p></td><td width=199 style='width:148.9pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:.3in'><p class=MsoNormal><span style='color:#415464;font-size:10.0pt;font-family:""Verdana"",sans-serif'>" & Text(
+                var1.StartDate,
+                "mm/dd/yyyy hh:mm AM/PM"
+            ) & "<o:p></o:p></p></td><td width=165 style='width:123.6pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:.3in'><p class=MsoNormal><b><span style='font-size:10.0pt;font-family:""Verdana"",sans-serif'>Date &amp; Time Closed</span></b><o:p></o:p></p></td><td width=111 style='width:83.0pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:.3in'><p class=MsoNormal><span style='font-size:10.0pt;font-family:""Verdana"",sans-serif;color:#415464'>&nbsp;</span><span style='color:#415464;font-size:10.0pt;font-family:""Verdana"",sans-serif'>" & Text(
+                CompletedTime,
+                "mm/dd/yyyy hh:mm AM/PM"
+            ) & "&nbsp;" & If(
+                var1.Progress.Value = "Completed" || var1.Progress.Value = "Cancelled",
+                "",
+                "TBD"
+            ) & "</span><o:p></o:p></p></td></tr><tr><td width=721 colspan=4 valign=top style='width:540.75pt;border:solid windowtext 1.0pt;border-top:none;background:#D9D9D9;padding:0in 5.4pt 0in 5.4pt'><p class=MsoNormal align=center style='text-align:center'><b><span style='font-size:11.0pt;font-family:""Verdana"",sans-serif;color:black'>Resolution Details (All Times in CT)</span></b><b><span style='font-size:11.0pt;font-family:""Verdana"",sans-serif'><o:p></o:p></span></b></p></td></tr><tr style='height:.3in'><td width=247 style='width:185.25pt;border:solid windowtext 1.0pt;border-top:none;padding:0in 5.4pt 0in 5.4pt;height:.3in'><p class=MsoNormal><b><span style='font-size:10.0pt;font-family:""Verdana"",sans-serif'>Restorative Action</span></b><o:p></o:p></p></td><td width=474 colspan=3 style='width:355.5pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:.3in'><p><span style='color:#415464'><font face=""Verdana""><font>" & Substitute(
+                DataCardValue10.HtmlText,
+                Char(10),
+                "<br/>"
+            ) & "<span style='font-size:10.0pt;font-family:""Verdana"",sans-serif'><o:p></o:p></span></p></td></tr><tr style='height:.3in'><td width=247 style='width:185.25pt;border-top:none;border-left:solid windowtext 1.0pt;border-bottom:solid black 1.0pt;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:.3in'><p class=MsoNormal><b><span style='font-size:10.0pt;font-family:""Verdana"",sans-serif'>Next Update</span></b><o:p></o:p></p></td><td width=474 colspan=3 style='width:355.5pt;border-top:none;border-left:none;border-bottom:solid black 1.0pt;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:.3in'><p class=MsoNormal><span style='color:#415464;font-size:10.0pt;font-family:""Verdana"",sans-serif'>" & Text(
+                XXXNextUpdate,
+                "mm/dd/yyyy hh:mm AM/PM"
+            ) & "&nbsp;" & If(
+                var1.Progress.Value = "Completed" || var1.Progress.Value = "Cancelled",
+                "None Expected",
+                "(or as events warrant)"
+            ) & "</span><o:p></o:p></p></td></tr><tr><td width=721 colspan=4 style='width:540.75pt;padding:.05in .05in .05in .05in'><p class=MsoNormal style='margin-left:1.45pt'><!--[if gte vml 1]><v:shapetype id=""_x0000_t75"" coordsize=""21600,21600"" o:spt=""75"" o:preferrelative=""t"" path=""m@4@5l@4@11@9@11@9@5xe"" filled=""f"" stroked=""f"">
+            <v:stroke joinstyle=""miter"" />
+            <v:formulas>
+            <v:f eqn=""if lineDrawn pixelLineWidth 0"" />
+            <v:f eqn=""sum @0 1 0"" />
+            <v:f eqn=""sum 0 0 @1"" />
+            <v:f eqn=""prod @2 1 2"" />
+            <v:f eqn=""prod @3 21600 pixelWidth"" />
+            <v:f eqn=""prod @3 21600 pixelHeight"" />
+            <v:f eqn=""sum @0 0 1"" />
+            <v:f eqn=""prod @6 1 2"" />
+            <v:f eqn=""prod @7 21600 pixelWidth"" />
+            <v:f eqn=""sum @8 21600 0"" />
+            <v:f eqn=""prod @7 21600 pixelHeight"" />
+            <v:f eqn=""sum @10 21600 0"" />
+            </v:formulas>
+            <v:path o:extrusionok=""f"" gradientshapeok=""t"" o:connecttype=""rect"" />
+            <o:lock v:ext=""edit"" aspectratio=""t"" />
+            </v:shapetype><v:shape id=""Picture_x0020_2"" o:spid=""_x0000_s1027"" type=""#_x0000_t75"" style='position:absolute;left:0;text-align:left;margin-left:0;margin-top:0;width:29.25pt;height:29.25pt;z-index:251658240;visibility:visible;mso-wrap-style:square;mso-width-percent:0;mso-height-percent:0;mso-wrap-distance-left:6pt;mso-wrap-distance-top:0;mso-wrap-distance-right:6pt;mso-wrap-distance-bottom:0;mso-position-horizontal:left;mso-position-horizontal-relative:text;mso-position-vertical:absolute;mso-position-vertical-relative:line;mso-width-percent:0;mso-height-percent:0;mso-width-relative:page;mso-height-relative:page' o:allowoverlap=""f"">
+            <v:imagedata src=""https://quorumhealth.com/wp-content/uploads/2022/02/Person-Text-Bubble.png"" />
+            <w:wrap type=""square"" anchory=""line""/>
+            </v:shape><![endif]--><img width=39 height=39 style='width:.4062in;height:.4062in' src=""https://quorumhealth.com/wp-content/uploads/2022/02/Person-Text-Bubble.png"" align=left hspace=8 v:shapes=""Picture_x0020_2""><span style='font-size:9.0pt;font-family:""Verdana"",sans-serif'>Need Assistance? Contact the <b>QHC Service Desk at 1-844-QHC-DESK (742-3375)</b> or </span><a href=""https://qhchelp.com/""><span style='font-size:9.0pt;font-family:""Verdana"",sans-serif'>qhchelp.com</span></a><span style='font-size:9.0pt;font-family:""Verdana"",sans-serif'> as soon as possible to report a security incident or contact your IT Director (ITD) if you have questions.</span><span style='font-size:6.0pt;font-family:""Verdana"",sans-serif'><o:p></o:p></span></p></td></tr><tr style='height:33.3pt'><td width=721 colspan=4 style='width:540.75pt;background:#D9D9D9;padding:.05in .05in .05in .1in;height:33.3pt'><p class=MsoNormal style='text-indent:-4.5pt'><!--[if gte vml 1]><v:shape id=""Picture_x0020_3"" o:spid=""_x0000_s1026"" type=""#_x0000_t75"" style='position:absolute;margin-left:51.55pt;margin-top:0;width:102.75pt;height:26.25pt;z-index:251659264;visibility:visible;mso-wrap-style:square;mso-width-percent:0;mso-height-percent:0;mso-wrap-distance-left:9pt;mso-wrap-distance-top:0;mso-wrap-distance-right:9pt;mso-wrap-distance-bottom:0;mso-position-horizontal:right;mso-position-horizontal-relative:text;mso-position-vertical:absolute;mso-position-vertical-relative:line;mso-width-percent:0;mso-height-percent:0;mso-width-relative:page;mso-height-relative:page' o:allowoverlap=""f"">
+            <v:imagedata src=""https://quorumhealth.com/wp-content/uploads/2022/02/Quorum-Health-BW-logo.png"" />
+            <w:wrap type=""square"" anchory=""line""/>
+            </v:shape><![endif]--><img width=137 height=35 style='width:1.427in;height:.3645in' src=""https://quorumhealth.com/wp-content/uploads/2022/02/Quorum-Health-BW-logo.png"" align=right hspace=12 v:shapes=""Picture_x0020_3""><b><span style='font-size:8.0pt;font-family:""Verdana"",sans-serif;color:black'>Quorum Health IT Department<br></span></b><span style='font-size:7.0pt;font-family:""Verdana"",sans-serif;color:black'>QuorumHealth.com &copy;QHCCS, LLC &middot; 1573 Mallory Lane, Suite 100, Brentwood, TN 37027</span><b><span style='font-size:8.0pt;font-family:""Verdana"",sans-serif'><o:p></o:p></span></b></p></td></tr></table></div><p class=MsoNormal align=center style='text-align:center'><o:p>&nbsp;</o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>"
+        PaddingTop: =0
+        Size: =10
+        Width: =788
+        X: =328
+        Y: =60
+        ZIndex: =12
+
+    chkReviewed As checkbox:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        CheckboxBackgroundFill: =RGBA(0, 0, 0, 1)
+        CheckboxBorderColor: =RGBA(197, 203, 207, 1)
+        CheckmarkFill: =RGBA(255, 255, 255, 1)
+        Color: =RGBA(56, 67, 75, 1)
+        FocusedBorderThickness: =0
+        Font: =Font.'Segoe UI'
+        Height: =40
+        HoverBorderColor: =
+        HoverColor: =RGBA(56, 67, 75, 1)
+        OnSelect: |-
+            =If(var1.Progress.Value = "Completed", Set(CompletedTime,Text(var1.DueDate,"mm/dd/yyyy hh:mm AM/PM")&" CT"),Set(CompletedTime,Blank())); 
+        PressedColor: =RGBA(56, 67, 75, 1)
+        Size: =13
+        Text: ="Reviewed"
+        X: =1158
+        Y: =64
+        ZIndex: =13
+
+    "'Send Button' As icon.Save":
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Color: =RGBA(43, 52, 58, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Height: =48
+        Icon: =Icon.Send
+        OnSelect: |-
+            =Set(varAdditionalRecipients, Concat('QHC - CIM_Communication_Non-Facility',Distro,";") & ";" & Concat(Filter('QHC - CIM_Communication',Title in DataCardValue7.SelectedItems.Value),Distro,";"));
+            If(
+                var1.Priority.Value = "P1",
+                Patch(
+                    'QHC - Critical Incident Management',
+                    var1,
+                    {Next_x0020_Update_x0020_Time: DateAdd( Now(), 185, Minutes )}
+                ),
+                Patch(
+                    'QHC - Critical Incident Management',
+                    var1,
+                    {Next_x0020_Update_x0020_Time: DateAdd( Now(), 365, Minutes )}
+                )
+            );
+            If(var1.Initial_x0020_Notice_x0020_Sent=false,
+            Set(varSubject,"Initial:"),Set(varSubject,"Update:"));
+            If(var1.Initial_x0020_Notice_x0020_Sent=false,
+            Patch(
+                    'QHC - Critical Incident Management',
+                    var1,
+                    {Initial_x0020_Notice_x0020_Sent:true}));
+            If(
+                var1.Priority.Value = "P1",
+                Set(XXXNextUpdate,Text(DateAdd( Now(), 65, Minutes ),"mm/dd/yyyy hh:mm AM/PM") 
+                ),
+                Set(XXXNextUpdate,Text(DateAdd( Now(), 245, Minutes ),"mm/dd/yyyy hh:mm AM/PM") 
+                )
+            );
+            If(var1.Progress.Value = "Completed", Set(XXXNextUpdate,""));
+            If(var1.Progress.Value = "Completed" || var1.Progress.Value = "Cancelled", Set(varSubject,"Closed:"));
+            If(var1.Progress.Value = "Completed", Set(CompletedTime,Text(var1.DueDate,"mm/dd/yyyy hh:mm AM/PM")),Set(CompletedTime,Blank()));
+            Set(varDistro,"cleonard@3-dtechnology.com;rbutts@3-dtechnology.com;nschussler@3-dtechnology.com;cwilliams@3-dtechnology.com" & ";" & varAdditionalRecipients);
+            Set(
+                EmailTemplate,
+                HtmlText1.HtmlText
+            );
+            Office365Outlook.SendEmailV2("3dmajorim@3-dtechnology.com",varSubject & " " & var1.Priority.Value & "-" & var1.Title,EmailTemplate,{From:"3dmajorim@3-dtechnology.com",Importance:"High", Bcc:"zstephens@3-dtechnology.com"});
+            If( Connection.Connected,
+             Notify("Email Notification Sent"),
+              Notify("Email Notification failed"));
+            
+                //Office365Outlook.SharedMailboxSendEmailV2(
+            //    "QHC_Incident_Management@qhcus.com",
+            //    "cleonard@3-dtechnology.com;rbutts@3-dtechnology.com;nschussler@3-dtechnology.com;cwilliams@3-dtechnology.com",
+            //    var1.Priority.Value & "-" & var1.Title,
+            //    EmailTemplate & varDistro,
+            //    {Bcc: "cleonard@3-dtechnology.com;rbutts@3-dtechnology.com;nschussler@3-dtechnology.com;cwilliams@3-dtechnology.com",
+            //    Importance: "High"
+            //    }
+            //);
+            //Office365Outlook.SendEmailV2(
+            //    "",
+            //    var1.Priority.Value & "-" & var1.Title,
+            //    EmailTemplate,
+            //    {From:"QHC_Incident_Management@qhcus.com", Bcc: "cleonard@3-dtechnology.com;rbutts@3-dtechnology.com;nschussler@3-dtechnology.com;cwilliams@3-dtechnology.com"; & ";" //& varAdditionalRecipients & ";" & Concat(Filter('QHC - CIM_Communication',Title in DataCardValue7.SelectedItems.Value),Distro,";"),
+            //    Importance: "High"
+            //    }
+            //);
+            Set(
+                TEMPNotes,
+                DataCardValue16.Text & Char(13) & Char(13) & Left(varSubject,Len(varSubject)-1) & " notification sent at " & Text(
+                    Now(),
+                    ShortTime
+                ) & " on " & Text(
+                    Now(),
+                    ShortDate
+                ) & Char(13)
+            );
+            SubmitForm(Form2);
+            Set(XXXNextUpdate,"");
+            Set(LastSubmit,Form2.LastSubmit.ID);
+            Navigate(
+                DashboardPage,
+                Fade
+            )
+        Tooltip: ="Send Notice"
+        Visible: =If(chkReviewed.Value = true,true)
+        Width: =50
+        X: =1308
+        Y: =63
+        ZIndex: =14
+

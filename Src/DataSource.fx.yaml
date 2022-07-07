@@ -1,0 +1,287 @@
+DataSource As screen:
+    BackgroundImage: =
+    Fill: =RGBA(26, 26, 26, 1)
+    Height: =Max(App.Height, App.DesignHeight)
+    LoadingSpinnerColor: =RGBA(100, 118, 132, 1)
+    OnHidden: |-
+        =Clear(colAffectedLocations);
+        Clear(colDistros)
+    OnVisible: =
+    Orientation: =If(DataSource.Width < DataSource.Height, Layout.Vertical, Layout.Horizontal)
+    Size: =1 + CountRows(App.SizeBreakpoints) - CountIf(App.SizeBreakpoints, Value >= DataSource.Width)
+    Width: =Max(App.Width, App.DesignWidth)
+
+    Rectangle7_27 As rectangle:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        BorderThickness: =2
+        Fill: =RGBA(56, 67, 75, 1)
+        FocusedBorderColor: =Rectangle7_27.BorderColor
+        Height: =656
+        TabIndex: =0
+        Width: =1366
+        Y: =112
+        ZIndex: =1
+
+    "Gallery3 As gallery.'BrowseLayout_Vertical_TwoTextVariant_ver4.0'":
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Height: =463
+        Items: ='QHC - CIM_Communication_Non-Facility'
+        Layout: =Layout.Vertical
+        TemplatePadding: =0
+        TemplateSize: =65
+        X: =34
+        Y: =178
+        ZIndex: =1
+
+        Title7 As label:
+            Color: =RGBA(255, 255, 255, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FontWeight: =FontWeight.Semibold
+            Height: =Self.Size * 1.8
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =20
+            Text: =ThisItem.Title
+            VerticalAlign: =VerticalAlign.Top
+            Width: =Parent.TemplateWidth - 104
+            X: =
+            Y: =16
+            ZIndex: =1
+
+        NextArrow5 As icon.ChevronRight:
+            AccessibleLabel: =Self.Tooltip
+            BorderColor: =RGBA(197, 203, 207, 1)
+            Color: =RGBA(197, 203, 207, 1)
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            DisabledColor: =RGBA(244, 244, 244, 1)
+            Height: =60
+            Icon: =Icon.ChevronRight
+            OnSelect: =Select(Parent)
+            PaddingBottom: =10
+            PaddingLeft: =10
+            PaddingRight: =10
+            PaddingTop: =10
+            TabIndex: =0
+            Tooltip: ="View item details"
+            Width: =60
+            X: =Parent.TemplateWidth - Self.Width - 5
+            Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
+            ZIndex: =3
+
+        Separator9 As rectangle:
+            BorderColor: =RGBA(197, 203, 207, 1)
+            Fill: =RGBA(197, 203, 207, 1)
+            Height: =1
+            OnSelect: =Select(Parent)
+            Width: =Parent.TemplateWidth
+            Y: =Parent.TemplateHeight - 1
+            ZIndex: =4
+
+    Rectangle1_17 As rectangle:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Fill: =RGBA(90, 106, 119, 1)
+        FocusedBorderColor: =Rectangle1_17.BorderColor
+        Height: =60
+        TabIndex: =0
+        Width: =1366.00
+        X: =0.00
+        ZIndex: =3
+
+    TextBox4_12 As label:
+        Align: =Center
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        FocusedBorderColor: =TextBox4_12.BorderColor
+        Height: =60
+        HoverBorderColor: =TextBox4_12.BorderColor
+        HoverColor: =TextBox4_12.Color
+        HoverFill: =TextBox4_12.Fill
+        PressedBorderColor: =TextBox4_12.BorderColor
+        PressedColor: =TextBox4_12.Color
+        PressedFill: =TextBox4_12.Fill
+        Size: =26.68
+        Text: ="QHC - Critical Incident Console"
+        VerticalAlign: =Middle
+        Width: =1366.00
+        X: =0.00
+        ZIndex: =4
+
+    Rectangle6_31 As rectangle:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Fill: =RGBA(255, 255, 255, .1)
+        FocusedBorderColor: =Rectangle6_31.BorderColor
+        TabIndex: =0
+        Width: =1.33
+        X: =0.00
+        Y: =78.8235294117628
+        ZIndex: =5
+
+    Rectangle1_24 As rectangle:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Fill: =RGBA(232, 234, 236, 1)
+        Height: =48
+        Width: =1366
+        Y: =63
+        ZIndex: =8
+
+    "'Back Button_1' As icon.BackArrow":
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Color: =RGBA(197, 203, 207, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Height: =49
+        Icon: =Icon.BackArrow
+        OnSelect: =Back(Fade)
+        Width: =49
+        X: =5
+        Y: =5
+        ZIndex: =11
+
+    Rectangle7_26 As rectangle:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        BorderThickness: =2
+        Fill: =RGBA(56, 67, 75, 1)
+        FocusedBorderColor: =Rectangle7_26.BorderColor
+        Height: =1
+        TabIndex: =0
+        Width: =1364
+        X: =1
+        Y: =109
+        ZIndex: =21
+
+    Icon1_6 As icon.Save:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Color: =RGBA(56, 67, 75, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Height: =45
+        Icon: =Icon.Save
+        OnSelect: |-
+            =SubmitForm(Form5);
+            Refresh('QHC - CIM_Communication_Non-Facility');
+            Navigate(DashboardPage,Fade)
+        Tooltip: ="Save"
+        Width: =40
+        X: =1312
+        Y: =62
+        ZIndex: =22
+
+    Form5 As form:
+        AcceptsFocus: =false
+        BorderColor: =RGBA(197, 203, 207, 1)
+        DataSource: =[@'QHC - CIM_Communication_Non-Facility']
+        Height: =577
+        Item: =Gallery3.Selected
+        Width: =645
+        X: =702
+        Y: =160
+        ZIndex: =23
+
+        Distro_DataCard5 As typedDataCard.textualEditCard:
+            BorderColor: =RGBA(197, 203, 207, 1)
+            BorderStyle: =BorderStyle.Solid
+            DataField: ="Distro"
+            Default: =ThisItem.Distro
+            DisplayMode: =Parent.DisplayMode
+            DisplayName: ="Distro"
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =501
+            MaxLength: =DataSourceInfo([@'QHC - CIM_Communication_Non-Facility'], DataSourceInfo.MaxLength, "Distro")
+            Required: =false
+            Update: =DataCardValue40.Text
+            Width: =645
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            DataCardKey42 As label:
+                AutoHeight: =true
+                Color: =RGBA(197, 203, 207, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =34
+                Size: =13
+                Text: =Parent.DisplayName
+                Width: =Parent.Width - 60
+                Wrap: =false
+                X: =30
+                Y: =10
+                ZIndex: =1
+
+            DataCardValue40 As text:
+                BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                BorderThickness: =2
+                Color: =RGBA(255, 255, 255, 1)
+                Default: =ThisItem.Distro
+                DelayOutput: =true
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =Parent.DisplayMode
+                Fill: =RGBA(0, 0, 0, 1)
+                FocusedBorderThickness: =4
+                Height: =430
+                HoverBorderColor: =RGBA(197, 203, 207, 1)
+                HoverColor: =RGBA(255, 255, 255, 1)
+                HoverFill: =RGBA(62, 74, 83, 1)
+                MaxLength: =2000
+                Mode: =TextMode.MultiLine
+                PaddingLeft: =5
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Size: =13
+                Tooltip: =Parent.DisplayName
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =DataCardKey42.Y + DataCardKey42.Height + 5
+                ZIndex: =2
+
+            ErrorMessage27 As label:
+                AutoHeight: =true
+                Color: =RGBA(255, 51, 51, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                FontWeight: =FontWeight.Semibold
+                Height: =10
+                Live: =Live.Assertive
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                Text: =Parent.Error
+                Visible: =Parent.DisplayMode=DisplayMode.Edit
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =DataCardValue40.Y + DataCardValue40.Height
+                ZIndex: =3
+
+            StarVisible27 As label:
+                Align: =Align.Center
+                Color: =RGBA(197, 203, 207, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =DataCardKey42.Height
+                Size: =13
+                Text: ="*"
+                Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                Width: =30
+                Wrap: =false
+                Y: =DataCardKey42.Y
+                ZIndex: =4
+
+    Label3 As label:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Height: =100
+        Size: =13
+        Text: =Concat('QHC - CIM_Communication_Non-Facility',Distro,";")
+        Visible: =false
+        Width: =1278
+        X: =34
+        Y: =653
+        ZIndex: =24
+

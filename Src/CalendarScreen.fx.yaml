@@ -1,0 +1,502 @@
+"CalendarScreen As screen.'tabletLayout_Calendar_ver3.0'":
+    Fill: =RGBA(29, 29, 29, 1)
+    LoadingSpinnerColor: =RGBA(100, 118, 132, 1)
+
+    RectMeetingBkg4 As rectangle:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Fill: =RGBA(116, 116, 116, 1)
+        Height: =42
+        Visible: =_calendarVisible
+        Width: =Parent.Width - Self.X
+        X: =422
+        Y: =RectQuickActionBar6.Height
+        ZIndex: =1
+
+    RectQuickActionBar6 As rectangle:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Fill: =RGBA(100, 118, 132, 1)
+        Height: =64
+        Width: =Parent.Width
+        ZIndex: =2
+
+    LblAppName4 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Height: =64
+        PaddingLeft: =0
+        Size: =18
+        Text: ="Calendar"
+        Width: =Parent.Width - Self.X * 2
+        Wrap: =false
+        X: =32
+        ZIndex: =3
+
+    LblResetToday4 As label:
+        Align: =Align.Center
+        Color: =iconCalendar4.Color
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =iconCalendar4.Height
+        PaddingTop: =12
+        Size: =11
+        Text: =DateDiff(Date(Year(Today()), Month(Today()), 1), Today(), Days) + 1
+        Width: =iconCalendar4.Width
+        X: =iconCalendar4.X
+        Y: =iconCalendar4.Y
+        ZIndex: =4
+
+    iconCalendar4 As icon.CalendarBlank:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Color: =RGBA(197, 203, 207, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Height: =40
+        Icon: =Icon.CalendarBlank
+        OnSelect: |-
+            =/*resets calendar view and date selection to today*/
+            Set(_dateSelected, Today());
+            Set(_firstDayOfMonth, DateAdd(Today(), 1 - Day(Today()), Days));
+            Set(_firstDayInView, DateAdd(_firstDayOfMonth, -(Weekday(_firstDayOfMonth) - 2 + 1), Days));
+            Set(_lastDayOfMonth, DateAdd(DateAdd(_firstDayOfMonth, 1, Months), -1, Days))
+        TabIndex: =0
+        Tooltip: ="Reset selected date to today"
+        Width: =40
+        X: =395 - Self.Width
+        Y: =dropdownCalendarSelection4.Y
+        ZIndex: =5
+
+    dropdownCalendarSelection4 As dropdown:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        ChevronBackground: =RGBA(100, 118, 132, 1)
+        ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+        ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+        ChevronHoverBackground: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        ChevronHoverFill: =RGBA(255, 255, 255, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Default: =_myCalendar.DisplayName
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Fill: =RGBA(0, 0, 0, 1)
+        HoverColor: =RGBA(255, 255, 255, 1)
+        HoverFill: =RGBA(62, 74, 83, 1)
+        Items: =Office365Outlook.CalendarGetTables().value
+        OnChange: =Select(dropdownCalendarSelection4)
+        OnSelect: |-
+            =/*retrieves calendar events for all days in current month view and selected calendar 
+            _minDate and _maxDate act as markers to prevent duplicate data collection*/         
+            If(IsBlank(_userDomain),         
+            	UpdateContext({_showLoading: true});         
+            	Set(_userDomain, Right(User().Email, Len(User().Email) - Find("@", User().Email)));         
+            	Set(_dateSelected, Today());         
+            	Set(_firstDayOfMonth, DateAdd(Today(), 1 - Day(Today()), Days));         
+            	Set(_firstDayInView, DateAdd(_firstDayOfMonth, -(Weekday(_firstDayOfMonth) - 2 + 1), Days));         
+            	Set(_lastDayOfMonth, DateAdd(DateAdd(_firstDayOfMonth, 1, Months), -1, Days))         
+            );         
+            Set(_calendarVisible, false);         
+            UpdateContext({_showLoading: true});         
+            Set(_myCalendar, Self.Selected);         
+            Set(_minDate, DateAdd(_firstDayOfMonth, -(Weekday(_firstDayOfMonth) - 2 + 1), Days));         
+            Set(_maxDate, DateAdd(DateAdd(_firstDayOfMonth, -(Weekday(_firstDayOfMonth) - 2 + 1), Days), 40, Days));         
+            ClearCollect(MyCalendarEvents, Office365Outlook.GetEventsCalendarViewV2(_myCalendar.Name, Text(_minDate, UTC), Text(_maxDate, UTC)).value);         
+            UpdateContext({_showLoading: false});         
+            Set(_calendarVisible, true)
+        PressedColor: =RGBA(255, 255, 255, 1)
+        PressedFill: =RGBA(197, 203, 207, 1)
+        SelectionFill: =RGBA(100, 118, 132, 1)
+        Size: =13
+        Tooltip: ="Select a calendar"
+        Width: =307
+        X: =32
+        Y: =RectQuickActionBar6.Height + 24
+        ZIndex: =6
+
+    LblMonthSelected4 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Height: =50
+        Size: =18
+        Text: =Text(_firstDayOfMonth, "mmmm yyyy")
+        Visible: =_calendarVisible
+        Width: =419
+        Wrap: =false
+        Y: =dropdownCalendarSelection4.Y + dropdownCalendarSelection4.Height + 40
+        ZIndex: =7
+
+    iconPrevMonth4 As icon.ChevronLeft:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Color: =RGBA(197, 203, 207, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Height: =50
+        Icon: =Icon.ChevronLeft
+        OnSelect: |-
+            =/*changes month view to previous month*/
+            Set(_firstDayOfMonth, DateAdd(_firstDayOfMonth, -1, Months));
+            Set(_firstDayInView, DateAdd(_firstDayOfMonth, -(Weekday(_firstDayOfMonth) - 2 + 1), Days));
+            Set(_lastDayOfMonth, DateAdd(DateAdd(_firstDayOfMonth, 1, Months), -1, Days));
+            /*collects calendar events for all days in current month view. Updates _minDate to prevent duplicate data collection if user returns to this month view*/
+            If(_minDate > _firstDayOfMonth, Set(_minDate, _firstDayOfMonth); Collect(MyCalendarEvents, Office365Outlook.GetEventsCalendarViewV2(_myCalendar.Name, Text(_minDate, UTC), Text(_lastDayOfMonth, UTC)).value))
+        PaddingBottom: =7
+        PaddingLeft: =7
+        PaddingRight: =7
+        PaddingTop: =7
+        TabIndex: =0
+        Tooltip: ="View previous month"
+        Visible: =_calendarVisible
+        Width: =59
+        Y: =LblMonthSelected4.Y
+        ZIndex: =8
+
+    iconNextMonth4 As icon.ChevronRight:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Color: =RGBA(197, 203, 207, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Height: =50
+        Icon: =Icon.ChevronRight
+        OnSelect: |-
+            =/*changes month view to next month*/
+            Set(_firstDayOfMonth, DateAdd(_firstDayOfMonth, 1, Months));
+            Set(_firstDayInView, DateAdd(_firstDayOfMonth, -(Weekday(_firstDayOfMonth) - 2 + 1), Days));
+            /*collects calendar events for all days in current month view. Updates _maxDate to prevent duplicate data collection if user returns to this month view*/
+            Set(_lastDayOfMonth, DateAdd(DateAdd(_firstDayOfMonth, 1, Months), -1, Days));
+            If(_lastDayOfMonth > _maxDate, Set(_maxDate, _lastDayOfMonth); Collect(MyCalendarEvents, Office365Outlook.GetEventsCalendarViewV2(_myCalendar.Name, Text(_firstDayOfMonth, UTC), Text(_maxDate, UTC)).value))
+        PaddingBottom: =7
+        PaddingLeft: =7
+        PaddingRight: =7
+        PaddingTop: =7
+        TabIndex: =0
+        Tooltip: ="View next month"
+        Visible: =_calendarVisible
+        Width: =59
+        X: =419 - Self.Width
+        Y: =LblMonthSelected4.Y
+        ZIndex: =9
+
+    WeekdayGallery4 As gallery.WeekdayGallery:
+        AccessibleLabel: ="Days of the week"
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Height: =45
+        Items: =Calendar.WeekdaysShort()
+        ShowScrollbar: =false
+        TemplatePadding: =0
+        TemplateSize: =60
+        Visible: =_calendarVisible
+        Width: =420
+        Y: =LblMonthSelected4.Y + LblMonthSelected4.Height + 10
+        ZIndex: =10
+
+        Title16 As label:
+            Align: =Align.Center
+            Color: =RGBA(255, 255, 255, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            Height: =WeekdayGallery4.TemplateHeight
+            OnSelect: =Select(Parent)
+            Size: =17 * WeekdayGallery4.TemplateWidth / 77
+            Text: =ThisItem.Value
+            VerticalAlign: =Middle
+            Width: =WeekdayGallery4.TemplateWidth
+            Wrap: =false
+            X: =WeekdayGallery4.TemplateWidth / 2 - Self.Width / 2
+            Y: =WeekdayGallery4.TemplateHeight / 2 - Self.Height / 2
+            ZIndex: =1
+
+    MonthDayGallery4 As gallery.MonthDayGallery:
+        AccessibleLabel: ="Days of selected month"
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Height: =425
+        Items: =[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19, 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41]
+        Layout: =Layout.Vertical
+        ShowScrollbar: =false
+        TemplatePadding: =0
+        TemplateSize: =60
+        Visible: =_calendarVisible
+        Width: =420
+        WrapCount: =7
+        Y: =WeekdayGallery4.Y + WeekdayGallery4.Height
+        ZIndex: =11
+
+        Circle4 As circle:
+            BorderColor: =RGBA(197, 203, 207, 1)
+            Fill: =RGBA(62, 74, 83, 1)
+            Height: =Self.Width
+            OnSelect: =Select(Parent)
+            Visible: |-
+                =/*Visible if calendar events are found on this day*/               
+                CountRows(Filter(MyCalendarEvents, DateValue(Text(Start)) = DateAdd(_firstDayInView,ThisItem.Value,Days))) > 0 && !Subcircle4.Visible && Title20.Visible
+            Width: =6.5
+            X: =MonthDayGallery4.TemplateWidth / 2 - Self.Width / 2
+            Y: =MonthDayGallery4.TemplateHeight * (0.75)
+            ZIndex: =1
+
+        Subcircle4 As circle:
+            BorderColor: =RGBA(197, 203, 207, 1)
+            Fill: =RGBA(100, 118, 132, 1)
+            Height: =3 * Title20.Size
+            OnSelect: =Select(Parent)
+            Visible: =And(DateAdd(_firstDayInView, ThisItem.Value) = _dateSelected, Title20.Visible)
+            Width: =Self.Height
+            X: =MonthDayGallery4.TemplateWidth/2 - Self.Width/2
+            Y: =MonthDayGallery4.TemplateHeight / 2 - Self.Height / 2
+            ZIndex: =2
+
+        Title20 As label:
+            Align: =Align.Center
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: =If(DateAdd(_firstDayInView, ThisItem.Value) = _dateSelected, RGBA(255, 255, 255, 1), DateAdd(_firstDayInView, ThisItem.Value) = Today(), RGBA(47, 41, 43, 1), LblMonthSelected4.Color)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            Fill: |-
+                =/*Fill value changes if the gallery item day = today, or if it lies outside of the current month*/             
+                If(
+                    /*Date selected is today*/
+                    DateAdd(_firstDayInView, ThisItem.Value) = Today() && DateAdd(_firstDayInView, ThisItem.Value) = _dateSelected, RGBA(0,0,0,0),
+                    /*Today when it is not selected*/
+                    DateAdd(_firstDayInView, ThisItem.Value) = Today(), ColorFade(Subcircle4.Fill, 0.67), 
+                    /*The day is outside the range of the currently selected month*/
+                    Abs(Self.Text - ThisItem.Value) > 10,RGBA(200, 200, 200, 0.3), RGBA(0, 0, 0, 0))
+            FocusedBorderColor: =Self.Color
+            FocusedBorderThickness: =2
+            Height: =MonthDayGallery4.TemplateHeight
+            OnSelect: =Set(_dateSelected, DateAdd(_firstDayInView, ThisItem.Value, Days))
+            Size: =17 * MonthDayGallery4.TemplateWidth / 91
+            TabIndex: =0
+            Text: =Day(DateAdd(_firstDayInView,ThisItem.Value,Days))
+            VerticalAlign: =Middle
+            Visible: |-
+                =/*This item is in a row containing no days of the visible month. It is in the row after the row where the last day of the month occurs*/ 
+                 !(DateAdd(_firstDayInView,ThisItem.Value,Days) - Weekday(DateAdd(_firstDayInView,ThisItem.Value,Days)) + 1 > _lastDayOfMonth)
+            Width: =MonthDayGallery4.TemplateWidth
+            Wrap: =false
+            ZIndex: =3
+
+    LblDateSelected4 As label:
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Height: =RectMeetingBkg4.Height
+        Size: =13
+        Text: =Text(_dateSelected, DateTimeFormat.LongDate)
+        Visible: =_calendarVisible
+        Width: =Parent.Width / 3 - 60
+        Wrap: =false
+        X: =451
+        Y: =RectQuickActionBar6.Height
+        ZIndex: =12
+
+    CalendarEventsGallery4 As gallery.CalendarEventsGallery:
+        AccessibleLabel: ="Calendar events for selected day"
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Fill: =RGBA(166, 166, 166, 1)
+        Height: =Parent.Height - Self.Y
+        Items: |-
+            =/*Shows events only on selected date*/
+            SortByColumns(Filter(MyCalendarEvents, Text(Start, DateTimeFormat.ShortDate) = Text(_dateSelected, DateTimeFormat.ShortDate)), "Start")
+        Layout: =Layout.Vertical
+        ShowScrollbar: =false
+        TemplatePadding: =0
+        TemplateSize: =85
+        Visible: =_calendarVisible
+        Width: =Parent.Width - Self.X
+        X: =422
+        Y: =LblDateSelected4.Y + LblDateSelected4.Height
+        ZIndex: =13
+
+        Rectangle6 As rectangle:
+            BorderColor: =RGBA(197, 203, 207, 1)
+            BorderThickness: =If(ThisItem.Id = _selectedCalendarEvent.Id, 2, 0)
+            Fill: =RGBA(0,0,0,0)
+            Height: =Parent.TemplateHeight
+            HoverFill: =RGBA(0,0,0,0)
+            OnSelect: =Navigate(CalendarDetailsScreen,ScreenTransition.UnCoverRight)
+            TabIndex: =0
+            Width: =Parent.TemplateWidth
+            ZIndex: =1
+
+        iconLocation4 As icon.Waypoint:
+            BorderColor: =RGBA(197, 203, 207, 1)
+            Color: =RGBA(197, 203, 207, 1)
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            DisabledColor: =RGBA(244, 244, 244, 1)
+            Height: =Subtitle6.Height
+            Icon: =Icon.Waypoint
+            OnSelect: =Select(Title21)
+            TabIndex: =0
+            Width: =28
+            X: =Title21.X
+            Y: =Subtitle6.Y
+            ZIndex: =2
+
+        Title21 As label:
+            BorderColor: =Self.Color
+            Color: =RGBA(255, 255, 255, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =2
+            Height: =Self.Size * 1.8
+            OnSelect: =Set(_selectedCalendarEvent, ThisItem)
+            Size: =10
+            TabIndex: =0
+            Text: =ThisItem.Subject
+            Tooltip: =ThisItem.Subject
+            VerticalAlign: =Middle
+            Width: =CalendarEventsGallery4.TemplateWidth - Self.X - 10
+            Wrap: =false
+            X: =128
+            Y: =17
+            ZIndex: =3
+
+        Subtitle6 As label:
+            BorderColor: =RGBA(197, 203, 207, 1)
+            Color: =RGBA(255, 255, 255, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =2
+            FontWeight: =FontWeight.Lighter
+            Height: =Self.Size * 2
+            OnSelect: =Select(Title21)
+            PaddingBottom: =0
+            Size: =11
+            Text: =ThisItem.Start & " - " & ThisItem.End
+            Tooltip: =ThisItem.Location
+            VerticalAlign: =Middle
+            Width: =CalendarEventsGallery4.TemplateWidth - Self.X - 10
+            Wrap: =false
+            X: =iconLocation4.X + iconLocation4.Width + 10
+            Y: =3 / 4 * CalendarEventsGallery4.TemplateHeight - Self.Height / 2 - 5
+            ZIndex: =4
+
+        Body7 As label:
+            Color: =RGBA(255, 255, 255, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =2
+            Height: =Title21.Height
+            OnSelect: =Select(Title21)
+            Size: =17 * CalendarEventsGallery4.TemplateHeight / 105
+            Text: =Text(ThisItem.Start, DateTimeFormat.ShortTime)
+            VerticalAlign: =Middle
+            Width: =110
+            Wrap: =false
+            X: =32
+            Y: =Title21.Y
+            ZIndex: =5
+
+        Description4 As label:
+            Color: =RGBA(255, 255, 255, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =2
+            Height: =Subtitle6.Height
+            OnSelect: =Select(Title21)
+            Size: =17 * CalendarEventsGallery4.TemplateHeight / 105
+            Text: =DateDiff(ThisItem.Start, ThisItem.End, Minutes) & Lower(Left("Minute_Name", 1))
+            VerticalAlign: =Middle
+            Width: =100
+            Wrap: =false
+            X: =32
+            Y: =Subtitle6.Y
+            ZIndex: =6
+
+        Separator13 As rectangle:
+            BorderColor: =RGBA(197, 203, 207, 1)
+            Fill: =RGBA(197, 203, 207, 1)
+            Height: =1
+            OnSelect: =Select(Parent)
+            Width: =Parent.TemplateWidth
+            Y: =Parent.TemplateHeight - 1
+            ZIndex: =7
+
+        Icon18 As icon.DetailList:
+            BorderColor: =RGBA(197, 203, 207, 1)
+            Color: =RGBA(197, 203, 207, 1)
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            DisabledColor: =RGBA(244, 244, 244, 1)
+            Icon: =Icon.DetailList
+            OnSelect: =Navigate(CalendarDetailsScreen,ScreenTransition.UnCoverRight)
+            X: =870
+            Y: =9
+            ZIndex: =8
+
+    iconEmptyState5 As icon.CalendarBlank:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Color: =RGBA(197, 203, 207, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        DisplayMode: =DisplayMode.View
+        Icon: =Icon.CalendarBlank
+        Visible: =IsBlank(_userDomain)
+        X: =2* Parent.Width/3 - Self.Width / 2
+        Y: =LblNoEvents4.Y - Self.Height
+        ZIndex: =14
+
+    LblNoEvents4 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisplayMode: =DisplayMode.View
+        Height: =220
+        Size: =15
+        Text: =If(IsBlank(_userDomain), "Select a calendar from the drop down to begin", _showLoading, "Loading events...", "No events scheduled")
+        Visible: =IsBlank(_userDomain) || _showLoading || And(CountRows(CalendarEventsGallery4.AllItems) = 0 && _calendarVisible)
+        Width: =600
+        X: =2* Parent.Width/3 - Self.Width / 2
+        Y: =CalendarEventsGallery4.Y + CalendarEventsGallery4.Height/2 - Self.Height/2
+        ZIndex: =15
+
+    RectCalendarSeparator4 As rectangle:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Fill: =RGBA(197, 203, 207, 1)
+        Height: =Parent.Height - Self.Y
+        Width: =2
+        X: =420
+        Y: =RectQuickActionBar6.Height
+        ZIndex: =16
+
+    Icon19 As icon.ChevronLeft:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Color: =RGBA(197, 203, 207, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Height: =51
+        Icon: =Icon.ChevronLeft
+        OnSelect: =Back()
+        X: =15
+        Y: =6
+        ZIndex: =17
+
+    Button15_2 As button:
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Fill: =RGBA(179, 36, 36, 1)
+        FontWeight: =FontWeight.Semibold
+        HoverColor: =RGBA(255, 255, 255, 1)
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(Screen5)
+        Size: =10
+        Text: ="Create new Event"
+        Visible: |
+            =false
+        X: =1174
+        Y: =12
+        ZIndex: =18
+
+    Label13 As label:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Size: =8
+        Text: ="Select 'QHC Incident Management' in dropdown"
+        Width: =250
+        X: =85
+        Y: =17
+        ZIndex: =19
+
+    Icon20 As icon.ArrowDown:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Color: =RGBA(184, 0, 0, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Height: =31
+        X: =153
+        Y: =48
+        ZIndex: =20
+

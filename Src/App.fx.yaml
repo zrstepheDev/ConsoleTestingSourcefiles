@@ -1,0 +1,8 @@
+App As appinfo:
+    BackEnabled: =false
+    OnStart: |-
+        =Set(varshoform,false);
+        Set(varCurrentgrip,1);
+        Set(varCurrentDate,Date(Year(Today()),Month(Today()),1))
+    StartScreen: =
+

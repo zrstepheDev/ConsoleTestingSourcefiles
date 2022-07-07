@@ -1,0 +1,62 @@
+<application xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:service="https://msmanaged-na.azure-apim.net/apim/logicflows" xmlns:siena="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11" siena:serviceId="populatepostmortemwordtemplate" xmlns="http://wadl.dev.java.net/2009/02">
+  <doc title="populate postmortem word template" />
+  <grammars>
+    <jsonTypes targetNamespace="https://msmanaged-na.azure-apim.net/apim/logicflows" xmlns="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11">
+      <string name="ManualTriggerInput_whathappened_Value_def" />
+      <string name="ManualTriggerInput_rootcause_Value_def" />
+      <string name="ManualTriggerInput_incidentsraised_Value_def" />
+      <string name="ManualTriggerInput_locationsaffected_Value_def" />
+      <string name="ManualTriggerInput_incidentmanager_Value_def" />
+      <string name="ManualTriggerInput_timeofchanges_Value_def" />
+      <string name="ManualTriggerInput_serviceapp_Value_def" />
+      <string name="ManualTriggerInput_teamsinvolved_Value_def" />
+      <string name="ManualTriggerInput_vendorprovider_Value_def" />
+      <string name="ManualTriggerInput_incidentbecamepublic_Value_def" />
+      <object name="ManualTriggerInput">
+        <property name="whathappened_Value" type="string" />
+        <property name="rootcause_Value" type="string" />
+        <property name="incidentsraised_Value" type="string" />
+        <property name="locationsaffected_Value" type="string" />
+        <property name="incidentmanager_Value" type="string" />
+        <property name="timeofchanges_Value" type="string" />
+        <property name="serviceapp_Value" type="string" />
+        <property name="teamsinvolved_Value" type="string" />
+        <property name="vendorprovider_Value" type="string" />
+        <property name="incidentbecamepublic_Value" type="string" />
+      </object>
+    </jsonTypes>
+  </grammars>
+  <resources siena:authenticationProviderHref="#PowerAppAuth" base="https://msmanaged-na.azure-apim.net/apim/logicflows">
+    <resource path="/{connectionId}/triggers/manual/run">
+      <param style="template" name="connectionId" type="xs:string" required="true" />
+      <method siena:requiresAuthentication="true" name="POST" id="Run">
+        <doc title="Runs a logic flow trigger." />
+        <request>
+          <param style="query" name="api-version" type="xs:string" required="true" fixed="2015-02-01-preview">
+            <doc title="The api version" />
+          </param>
+          <representation mediaType="application/json">
+            <param style="plain" name="whathappened_Value" path="/whathappened_Value" type="xs:string" required="true" />
+            <param style="plain" name="rootcause_Value" path="/rootcause_Value" type="xs:string" required="true" />
+            <param style="plain" name="incidentsraised_Value" path="/incidentsraised_Value" type="xs:string" required="true" />
+            <param style="plain" name="locationsaffected_Value" path="/locationsaffected_Value" type="xs:string" required="true" />
+            <param style="plain" name="incidentmanager_Value" path="/incidentmanager_Value" type="xs:string" required="true" />
+            <param style="plain" name="timeofchanges_Value" path="/timeofchanges_Value" type="xs:string" required="true" />
+            <param style="plain" name="serviceapp_Value" path="/serviceapp_Value" type="xs:string" required="true" />
+            <param style="plain" name="teamsinvolved_Value" path="/teamsinvolved_Value" type="xs:string" required="true" />
+            <param style="plain" name="vendorprovider_Value" path="/vendorprovider_Value" type="xs:string" required="true" />
+            <param style="plain" name="incidentbecamepublic_Value" path="/incidentbecamepublic_Value" type="xs:string" required="true" />
+          </representation>
+        </request>
+      </method>
+    </resource>
+  </resources>
+  <authenticationProviders xmlns="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11">
+    <connectionProvider id="PowerAppAuth" siena:connectionProviderId="logicflows" />
+  </authenticationProviders>
+  <template xmlns="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11">
+    <variable name="connectionId">
+      <modifyParams style="template" name="connectionId" attribute="fixed" />
+    </variable>
+  </template>
+</application>

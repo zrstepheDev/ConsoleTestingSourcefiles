@@ -1,0 +1,1435 @@
+DashboardPage As screen:
+    Fill: =RGBA(29, 29, 29, 1)
+    Height: =Max(App.Height, App.DesignHeight)
+    LoadingSpinnerColor: =RGBA(100, 118, 132, 1)
+    OnVisible: |-
+        =Refresh('QHC - App Library');
+        Refresh('QHC - Critical Incident Management');
+        Refresh('QHC - CIM_Communication');
+        Refresh('QHC - CIM_Communication_Non-Facility')
+        ;
+        {DisplayName: "3D Major Incident Management",
+        Email: "3DMIM@3-dtechnology.com"}
+    Orientation: =If(DashboardPage.Width < DashboardPage.Height, Layout.Vertical, Layout.Horizontal)
+    Size: =1 + CountRows(App.SizeBreakpoints) - CountIf(App.SizeBreakpoints, Value >= DashboardPage.Width)
+    Width: =Max(App.Width, App.DesignWidth)
+
+    Rectangle1_29 As rectangle:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Fill: =RGBA(232, 234, 236, 1)
+        Height: =48
+        Width: =1364
+        X: =1
+        Y: =63
+        ZIndex: =1
+
+    Group2 As group:
+        Height: =150
+        Width: =150
+        X: =27.4
+        Y: =47.5300931183284
+        ZIndex: =1
+
+        TextBox1_20 As label:
+            Align: =Center
+            BorderColor: =RGBA(197, 203, 207, 1)
+            Color: =RGBA(0,0,0,1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderColor: =TextBox1_20.BorderColor
+            Font: =Font.'Segoe UI'
+            FontWeight: =Semibold
+            Height: =127
+            HoverBorderColor: =TextBox1_20.BorderColor
+            HoverColor: =TextBox1_20.Color
+            HoverFill: =TextBox1_20.Fill
+            PressedBorderColor: =TextBox1_20.BorderColor
+            PressedColor: =TextBox1_20.Color
+            PressedFill: =TextBox1_20.Fill
+            Size: =42.69
+            Text: =CountRows(Filter('QHC - Critical Incident Management',Progress.Value <> "Completed",Progress.Value <> "Cancelled"))
+            VerticalAlign: =Middle
+            Width: =200
+            Wrap: =false
+            X: =36.55
+            Y: =84
+            ZIndex: =11
+
+        TextBox2_20 As label:
+            Align: =Center
+            BorderColor: =RGBA(197, 203, 207, 1)
+            Color: =RGBA(0,0,0,1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderColor: =TextBox2_20.BorderColor
+            Font: =Font.'Segoe UI'
+            Height: =34
+            HoverBorderColor: =TextBox2_20.BorderColor
+            HoverColor: =TextBox2_20.Color
+            HoverFill: =TextBox2_20.Fill
+            PressedBorderColor: =TextBox2_20.BorderColor
+            PressedColor: =TextBox2_20.Color
+            PressedFill: =TextBox2_20.Fill
+            Size: =13.34
+            Text: ="All Incidents"
+            VerticalAlign: =Middle
+            Width: =200
+            X: =37
+            Y: =169
+            ZIndex: =12
+
+    "Tickets2 As gallery.'BrowseLayout_Vertical_TwoTextVariant_ver4.0'":
+        BorderColor: =RGBA(43, 52, 58, 1)
+        Default: =LookUp('QHC - Critical Incident Management',ID = LastSubmit)
+        Fill: =RGBA(9, 33, 98, 1)
+        Height: =468
+        Items: =SortByColumns(Filter('QHC - Critical Incident Management',Progress.Value = Filter_Status.SelectedText.Value),"ID",Descending)
+        Layout: =Layout.Vertical
+        OnSelect: =true
+        TemplateFill: =If(ThisItem.IsSelected = true,RGBA(193, 200, 206, 1),RGBA(224, 228, 230, 1))
+        TemplatePadding: =0
+        TemplateSize: =40
+        Transition: =Transition.Push
+        Width: =930
+        Y: =299
+        ZIndex: =2
+
+        Title3 As label:
+            Align: =Align.Center
+            Color: =RGBA(56, 67, 75, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =If(ThisItem.IsSelected = true,Semibold,Normal)
+            Height: =31
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =11
+            Text: =ThisItem.ID
+            Width: =67
+            Y: =4
+            ZIndex: =2
+
+        Separator5 As rectangle:
+            BorderColor: =RGBA(197, 203, 207, 1)
+            Fill: =RGBA(197, 203, 207, 1)
+            Height: =1
+            OnSelect: =Select(Parent)
+            Width: =Parent.TemplateWidth
+            Y: =Parent.TemplateHeight - 1
+            ZIndex: =3
+
+        Title3_1 As label:
+            Align: =Align.Center
+            Color: =RGBA(56, 67, 75, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =If(ThisItem.IsSelected = true,Semibold,Normal)
+            Height: =31
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =11
+            Text: =ThisItem.Progress.Value
+            Width: =185
+            X: =67
+            Y: =4
+            ZIndex: =4
+
+        Title3_2 As label:
+            Align: =Align.Center
+            Color: =RGBA(56, 67, 75, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =If(ThisItem.IsSelected = true,Semibold,Normal)
+            Height: =31
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =11
+            Text: =ThisItem.Priority.Value
+            Width: =100
+            X: =252
+            Y: =4
+            ZIndex: =5
+
+        Title3_3 As label:
+            Align: =Align.Center
+            Color: =RGBA(56, 67, 75, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =If(ThisItem.IsSelected = true,Semibold,Normal)
+            Height: =31
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =11
+            Text: =ThisItem.AssignedTo.DisplayName
+            Width: =231
+            X: =352
+            Y: =4
+            ZIndex: =6
+
+        Title3_4 As label:
+            Align: =Align.Center
+            Color: =RGBA(56, 67, 75, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =If(ThisItem.IsSelected = true,Semibold,Normal)
+            Height: =31
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =11
+            Text: =ThisItem.Last_x0020_Update_x0020_Time
+            Width: =167
+            X: =583
+            Y: =4
+            ZIndex: =7
+
+        Title3_5 As label:
+            Align: =Align.Center
+            Color: =RGBA(56, 67, 75, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =If(ThisItem.IsSelected = true,Semibold,Normal)
+            Height: =31
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =11
+            Text: |-
+                =If(ThisItem.Progress.Value = "Completed", "N/A",If(IsBlank(ThisItem.Next_x0020_Update_x0020_Time),"N/A",Text((Text(ThisItem.Next_x0020_Update_x0020_Time - Now()) * 1440) -120, "# Min") ))
+            Width: =167
+            X: =758
+            Y: =4
+            ZIndex: =8
+
+        Icon2 As icon.Settings:
+            BorderColor: =RGBA(197, 203, 207, 1)
+            Color: =RGBA(255, 0, 0, 1)
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            DisabledColor: =RGBA(244, 244, 244, 1)
+            Height: =24
+            Icon: =Icon.Alarm
+            OnSelect: =Select(Parent)
+            Visible: =If(IsBlank(ThisItem.Next_x0020_Update_x0020_Time) = true || ThisItem.Progress.Value = "Completed" || ThisItem.Progress.Value = "Cancelled",false,If(Value((Value(ThisItem.Next_x0020_Update_x0020_Time - Now()) * 1440) -120) <= 15,true,false))
+            Width: =25
+            X: =883
+            Y: =8
+            ZIndex: =9
+
+    Group11 As group:
+        Height: =150
+        Width: =150.00000000000003
+        X: =231.8926627959
+        Y: =47.5300931183284
+        ZIndex: =2
+
+        TextBox1_21 As label:
+            Align: =Center
+            BorderColor: =RGBA(197, 203, 207, 1)
+            Color: =RGBA(43, 52, 58, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderColor: =TextBox1_21.BorderColor
+            Font: =Font.'Segoe UI'
+            FontWeight: =Semibold
+            Height: =127
+            HoverBorderColor: =TextBox1_21.BorderColor
+            HoverColor: =TextBox1_21.Color
+            HoverFill: =TextBox1_21.Fill
+            Live: =Live.On
+            PressedBorderColor: =TextBox1_21.BorderColor
+            PressedColor: =TextBox1_21.Color
+            PressedFill: =TextBox1_21.Fill
+            Size: =42.69
+            Text: =CountRows(Filter('QHC - Critical Incident Management', Progress.Value = "Triage"))
+            VerticalAlign: =Middle
+            Width: =200
+            Wrap: =false
+            X: =588
+            Y: =84
+            ZIndex: =13
+
+        TextBox2_21 As label:
+            Align: =Center
+            BorderColor: =RGBA(197, 203, 207, 1)
+            Color: =RGBA(56,86,153,1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderColor: =TextBox2_21.BorderColor
+            Font: =Font.'Segoe UI'
+            Height: =34
+            HoverBorderColor: =TextBox2_21.BorderColor
+            HoverColor: =TextBox2_21.Color
+            HoverFill: =TextBox2_21.Fill
+            PressedBorderColor: =TextBox2_21.BorderColor
+            PressedColor: =TextBox2_21.Color
+            PressedFill: =TextBox2_21.Fill
+            Size: =13.34
+            Text: ="Triage"
+            VerticalAlign: =Middle
+            Width: =200
+            X: =588
+            Y: =169
+            ZIndex: =14
+
+    "Gallery2 As gallery.'BrowseLayout_Vertical_OneTextVariant_ver4.0'":
+        BorderColor: =RGBA(197, 203, 207, 1)
+        BorderThickness: =1
+        DisplayMode: =DisplayMode.View
+        Fill: =RGBA(216, 219, 221, 1)
+        Height: =558
+        Items: =Tickets2.Selected
+        Layout: =Layout.Vertical
+        TemplatePadding: =0
+        TemplateSize: =558
+        Width: =436
+        X: =930
+        Y: =210
+        ZIndex: =3
+
+        Title2 As label:
+            Color: =RGBA(56, 67, 75, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisplayMode: =DisplayMode.View
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =36
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =12
+            Text: =ThisItem.Title
+            VerticalAlign: =VerticalAlign.Top
+            Width: =374
+            X: =14
+            Y: =52
+            ZIndex: =1
+
+        Separator2 As rectangle:
+            BorderColor: =RGBA(197, 203, 207, 1)
+            Fill: =RGBA(197, 203, 207, 1)
+            Height: =1
+            OnSelect: =Select(Parent)
+            Width: =Parent.TemplateWidth
+            Y: =Parent.TemplateHeight - 1
+            ZIndex: =3
+
+        Title2_1 As label:
+            Color: =RGBA(56, 67, 75, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisplayMode: =DisplayMode.View
+            Font: =Font.'Segoe UI'
+            Height: =54
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =12
+            Text: =Tickets2.Selected.Description
+            VerticalAlign: =VerticalAlign.Top
+            Width: =406
+            X: =14
+            Y: =95
+            ZIndex: =4
+
+        Title2_2 As label:
+            Color: =RGBA(56, 67, 75, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisplayMode: =DisplayMode.View
+            Font: =Font.'Segoe UI'
+            Height: =27
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =12
+            Text: =ThisItem.Priority.Value
+            VerticalAlign: =VerticalAlign.Top
+            Width: =160
+            X: =115
+            Y: =265
+            ZIndex: =5
+
+        Title2_3 As label:
+            Color: =RGBA(56, 67, 75, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisplayMode: =DisplayMode.View
+            Fill: =RGBA(237, 237, 237, 1)
+            Font: =Font.'Segoe UI'
+            Height: =124
+            OnSelect: =Select(Parent)
+            Overflow: =Overflow.Scroll
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =10
+            Text: =ThisItem.Notes
+            VerticalAlign: =VerticalAlign.Top
+            Width: =406
+            X: =14
+            Y: =425
+            ZIndex: =6
+
+        Title2_4 As label:
+            Color: =RGBA(56, 67, 75, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisplayMode: =DisplayMode.View
+            Font: =Font.'Segoe UI'
+            Height: =28
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =12
+            Text: =ThisItem.StartDate
+            VerticalAlign: =VerticalAlign.Top
+            Width: =208
+            X: =116
+            Y: =290
+            ZIndex: =7
+
+        Title2_5 As label:
+            Color: =RGBA(56, 67, 75, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisplayMode: =DisplayMode.View
+            Font: =Font.'Segoe UI'
+            Height: =27
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =12
+            Text: =ThisItem.Progress.Value
+            VerticalAlign: =VerticalAlign.Top
+            Width: =160
+            X: =108
+            Y: =346
+            ZIndex: =8
+
+        Title2_6 As label:
+            Color: =RGBA(56, 67, 75, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisplayMode: =DisplayMode.View
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =29
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Text: |-
+                ="ID: " & ThisItem.ID
+            VerticalAlign: =VerticalAlign.Top
+            Width: =374
+            X: =14
+            Y: =12
+            ZIndex: =9
+
+        Title2_7 As label:
+            Color: =RGBA(56, 67, 75, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =27
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =12
+            Text: |-
+                ="Priority:"
+            VerticalAlign: =VerticalAlign.Top
+            Width: =82
+            X: =14
+            Y: =265
+            ZIndex: =10
+
+        Title2_8 As label:
+            Color: =RGBA(56, 67, 75, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =27
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =12
+            Text: |-
+                ="Start:"
+            VerticalAlign: =VerticalAlign.Top
+            Width: =82
+            X: =14
+            Y: =290
+            ZIndex: =11
+
+        Title2_9 As label:
+            Color: =RGBA(56, 67, 75, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =27
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =12
+            Text: |-
+                ="Status:"
+            VerticalAlign: =VerticalAlign.Top
+            Width: =82
+            X: =14
+            Y: =346
+            ZIndex: =12
+
+        Title2_10 As label:
+            Color: =RGBA(56, 67, 75, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisplayMode: =DisplayMode.View
+            Height: =90
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =12
+            Text: =Concat(DataCardValue6.SelectedItems.Value,Value,",")
+            VerticalAlign: =VerticalAlign.Top
+            Width: =284
+            X: =115
+            Y: =175
+            ZIndex: =13
+
+        Title2_11 As label:
+            Color: =RGBA(56, 67, 75, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =27
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =12
+            Text: |-
+                ="CI:"
+            VerticalAlign: =VerticalAlign.Top
+            Width: =187
+            X: =14
+            Y: =175
+            ZIndex: =14
+
+        Title2_12 As label:
+            Color: =RGBA(56, 67, 75, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisplayMode: =DisplayMode.View
+            Height: =27
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =12
+            Text: =ThisItem.Bridge_x0020_Number
+            VerticalAlign: =VerticalAlign.Top
+            Visible: =false
+            Width: =250
+            X: =136
+            Y: =345
+            ZIndex: =15
+
+        Title2_13 As label:
+            Color: =RGBA(56, 67, 75, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =27
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =12
+            Text: |-
+                ="Bridge:"
+            VerticalAlign: =VerticalAlign.Top
+            Width: =82
+            X: =14
+            Y: =365
+            ZIndex: =16
+
+        Title2_14 As label:
+            Color: =RGBA(56, 67, 75, 1)
+            DisabledColor: =RGBA(216, 219, 221, 1)
+            DisplayMode: =DisplayMode.Disabled
+            FontWeight: =FontWeight.Semibold
+            Height: =22
+            HoverColor: =RGBA(0, 134, 208, 1)
+            OnSelect: |-
+                =If(Title2_14.Text <> "",Launch("https://dhscprod.service-now.com/nav_to.do?uri=incident.do?sysparm_query=number=" & Title2_14.Text))
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Text: =ThisItem.Incident_x0020_Number
+            Tooltip: ="Click to open in ServiceNow"
+            VerticalAlign: =VerticalAlign.Top
+            Visible: =false
+            Width: =160
+            X: =138
+            Y: =371
+            ZIndex: =17
+
+        Title2_15 As label:
+            Color: =RGBA(56, 67, 75, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =27
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =12
+            Text: |-
+                ="ServiceNow:"
+            VerticalAlign: =VerticalAlign.Top
+            Width: =122
+            X: =14
+            Y: =392
+            ZIndex: =18
+
+        HtmlText2 As htmlViewer:
+            Color: =RGBA(0, 94, 146, 1)
+            Font: =Font.'Segoe UI'
+            HtmlText: |-
+                =If(IsBlank(Title2_14.Text),"","<a href=https://dhscprod.service-now.com/nav_to.do?uri=incident.do?sysparm_query=number="& Title2_14.Text &">Open</a>")
+            OnSelect: =Select(Parent)
+            Size: =12
+            X: =110
+            Y: =385
+            ZIndex: =20
+
+        HtmlText2_1 As htmlViewer:
+            Color: =RGBA(0, 94, 146, 1)
+            Font: =Font.'Segoe UI'
+            HtmlText: =If(IsBlank(Title2_14.Text),"","<a href="& Title2_12.Text &">Join</a>")
+            OnSelect: =Select(Parent)
+            Size: =12
+            X: =110
+            Y: =358
+            ZIndex: =21
+
+        Title2_16 As label:
+            Color: =RGBA(56, 67, 75, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =27
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =12
+            Text: |-
+                ="Closed:"
+            VerticalAlign: =VerticalAlign.Top
+            Width: =82
+            X: =14
+            Y: =319
+            ZIndex: =22
+
+        Title2_17 As label:
+            Color: =RGBA(56, 67, 75, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisplayMode: =DisplayMode.View
+            Font: =Font.'Segoe UI'
+            Height: =28
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =12
+            Text: =ThisItem.DueDate
+            VerticalAlign: =VerticalAlign.Top
+            Width: =208
+            X: =116
+            Y: =318
+            ZIndex: =23
+
+    Group12 As group:
+        Height: =150
+        Width: =150
+        X: =435.439215686274
+        Y: =47.5300931183284
+        ZIndex: =3
+
+        TextBox1_22 As label:
+            Align: =Center
+            BorderColor: =RGBA(197, 203, 207, 1)
+            Color: =RGBA(0, 121, 187, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderColor: =TextBox1_22.BorderColor
+            Font: =Font.'Segoe UI'
+            FontWeight: =Semibold
+            Height: =127
+            HoverBorderColor: =TextBox1_22.BorderColor
+            HoverColor: =TextBox1_22.Color
+            HoverFill: =TextBox1_22.Fill
+            PressedBorderColor: =TextBox1_22.BorderColor
+            PressedColor: =TextBox1_22.Color
+            PressedFill: =TextBox1_22.Fill
+            Size: =42.69
+            Text: =CountRows(Filter('QHC - Critical Incident Management', Progress.Value = "Monitoring"))
+            VerticalAlign: =Middle
+            Width: =200
+            Wrap: =false
+            X: =859
+            Y: =84
+            ZIndex: =15
+
+        TextBox2_22 As label:
+            Align: =Center
+            BorderColor: =RGBA(197, 203, 207, 1)
+            Color: =RGBA(0, 121, 187, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderColor: =TextBox2_22.BorderColor
+            Font: =Font.'Segoe UI'
+            Height: =34
+            HoverBorderColor: =TextBox2_22.BorderColor
+            HoverColor: =TextBox2_22.Color
+            HoverFill: =TextBox2_22.Fill
+            PressedBorderColor: =TextBox2_22.BorderColor
+            PressedColor: =TextBox2_22.Color
+            PressedFill: =TextBox2_22.Fill
+            Size: =13.34
+            Text: ="Monitoring"
+            VerticalAlign: =Middle
+            Width: =200
+            X: =860
+            Y: =169
+            ZIndex: =16
+
+    Rectangle1_2 As rectangle:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Fill: =RGBA(243, 245, 245, 1)
+        FocusedBorderColor: =Rectangle1_2.BorderColor
+        Height: =93
+        TabIndex: =0
+        Width: =1366.00
+        X: =0.00
+        Y: =112
+        ZIndex: =4
+
+    Group13 As group:
+        Height: =150
+        Width: =150
+        X: =638.890013169452
+        Y: =47.5300931183284
+        ZIndex: =4
+
+        TextBox1_23 As label:
+            Align: =Center
+            BorderColor: =RGBA(197, 203, 207, 1)
+            Color: =RGBA(221, 79, 14, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderColor: =TextBox1_23.BorderColor
+            Font: =Font.'Segoe UI'
+            FontWeight: =Semibold
+            Height: =127
+            HoverBorderColor: =TextBox1_23.BorderColor
+            HoverColor: =TextBox1_23.Color
+            HoverFill: =TextBox1_23.Fill
+            PressedBorderColor: =TextBox1_23.BorderColor
+            PressedColor: =TextBox1_23.Color
+            PressedFill: =TextBox1_23.Fill
+            Size: =42.69
+            Text: =CountRows(Filter('QHC - Critical Incident Management', Progress.Value <> "Completed", Progress.Value <> "Cancelled", Value((Value(Next_x0020_Update_x0020_Time - Now()) * 1440) -120) <= 15,Not(IsBlank(Next_x0020_Update_x0020_Time))))
+            VerticalAlign: =Middle
+            Width: =200
+            Wrap: =false
+            X: =1131
+            Y: =83
+            ZIndex: =17
+
+        TextBox2_23 As label:
+            Align: =Center
+            BorderColor: =RGBA(197, 203, 207, 1)
+            Color: =RGBA(221, 79, 14, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderColor: =TextBox2_23.BorderColor
+            Font: =Font.'Segoe UI'
+            Height: =34
+            HoverBorderColor: =TextBox2_23.BorderColor
+            HoverColor: =TextBox2_23.Color
+            HoverFill: =TextBox2_23.Fill
+            PressedBorderColor: =TextBox2_23.BorderColor
+            PressedColor: =TextBox2_23.Color
+            PressedFill: =TextBox2_23.Fill
+            Size: =13.34
+            Text: ="Update Soon"
+            VerticalAlign: =Middle
+            Width: =200
+            X: =1131
+            Y: =168
+            ZIndex: =18
+
+    Rectangle1_12 As rectangle:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Fill: =RGBA(90, 106, 119, 1)
+        FocusedBorderColor: =Rectangle1_12.BorderColor
+        Height: =60
+        TabIndex: =0
+        Width: =1366.00
+        X: =0.00
+        ZIndex: =5
+
+    Group14 As group:
+        Height: =150
+        Width: =150
+        X: =848.058018729887
+        Y: =47.5300931183284
+        ZIndex: =5
+
+        TextBox1_24 As label:
+            Align: =Center
+            BorderColor: =RGBA(197, 203, 207, 1)
+            Color: =RGBA(227,48,12,1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderColor: =TextBox1_24.BorderColor
+            Font: =Font.'Segoe UI'
+            FontWeight: =Semibold
+            Height: =127
+            HoverBorderColor: =TextBox1_24.BorderColor
+            HoverColor: =TextBox1_24.Color
+            HoverFill: =TextBox1_24.Fill
+            PressedBorderColor: =TextBox1_24.BorderColor
+            PressedColor: =TextBox1_24.Color
+            PressedFill: =TextBox1_24.Fill
+            Size: =42.69
+            Text: =CountRows(Filter('QHC - Critical Incident Management', Progress.Value = "New"))
+            VerticalAlign: =Middle
+            Width: =200
+            Wrap: =false
+            X: =309
+            Y: =82
+            ZIndex: =19
+
+        TextBox2_24 As label:
+            Align: =Center
+            BorderColor: =RGBA(197, 203, 207, 1)
+            Color: =RGBA(227,48,12,1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderColor: =TextBox2_24.BorderColor
+            Font: =Font.'Segoe UI'
+            Height: =34
+            HoverBorderColor: =TextBox2_24.BorderColor
+            HoverColor: =TextBox2_24.Color
+            HoverFill: =TextBox2_24.Fill
+            PressedBorderColor: =TextBox2_24.BorderColor
+            PressedColor: =TextBox2_24.Color
+            PressedFill: =TextBox2_24.Fill
+            Size: =13.34
+            Text: ="New Incidents"
+            VerticalAlign: =Middle
+            Width: =200
+            X: =309
+            Y: =167
+            ZIndex: =20
+
+    Rectangle7_15 As rectangle:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Fill: =RGBA(92,92,92,.1)
+        FocusedBorderColor: =Rectangle7_15.BorderColor
+        Height: =1
+        TabIndex: =0
+        Width: =409.53
+        X: =0.00
+        Y: =207.8235294117647
+        ZIndex: =6
+
+    TextBox4_5 As label:
+        Align: =Center
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        FocusedBorderColor: =TextBox4_5.BorderColor
+        Height: =60
+        HoverBorderColor: =TextBox4_5.BorderColor
+        HoverColor: =TextBox4_5.Color
+        HoverFill: =TextBox4_5.Fill
+        PressedBorderColor: =TextBox4_5.BorderColor
+        PressedColor: =TextBox4_5.Color
+        PressedFill: =TextBox4_5.Fill
+        Size: =26.68
+        Text: ="QHC - Critical Incident Console Test"
+        VerticalAlign: =Middle
+        Width: =1366.00
+        X: =0.00
+        ZIndex: =7
+
+    Rectangle7_19 As rectangle:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        BorderThickness: =2
+        Fill: =RGBA(56, 67, 75, 1)
+        FocusedBorderColor: =Rectangle7_19.BorderColor
+        Height: =1
+        TabIndex: =0
+        Width: =1366.00
+        X: =0.00
+        Y: =207
+        ZIndex: =8
+
+    Button2 As button:
+        AutoDisableOnSelect: =false
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Fill: =RGBA(0, 0, 0, 0)
+        FocusedBorderColor: =ColorFade(Self.Fill, -75%)
+        FontWeight: =FontWeight.Semibold
+        Height: =60
+        HoverBorderColor: =Button2.BorderColor
+        HoverColor: =RGBA(255, 255, 255, 1)
+        HoverFill: =Button2.Fill
+        OnSelect: |-
+            =Navigate(NewIncidentPage,ScreenTransition.Fade);
+            NewForm(NewIncidentForm)
+        PaddingRight: =6.67
+        PaddingTop: =6.67
+        PressedColor: =Button2.Color
+        PressedFill: =Button2.Fill
+        Size: =15
+        Text: =""
+        Width: =80.04
+        X: =1285.96
+        ZIndex: =9
+
+    icon3_2 As icon.Add:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Color: =RGBA(197, 203, 207, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        FocusedBorderColor: =icon3_2.BorderColor
+        Height: =30
+        Icon: =Icon.Add
+        OnSelect: |-
+            =ResetForm(NewIncidentForm);
+            Navigate(NewIncidentPage,ScreenTransition.Fade)
+        PaddingRight: =0.00
+        PaddingTop: =0.00
+        TabIndex: =0
+        Width: =40.02
+        X: =1305.97
+        Y: =15
+        ZIndex: =10
+
+    TextBox5 As label:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        FocusedBorderColor: =TextBox5.BorderColor
+        HoverBorderColor: =TextBox5.BorderColor
+        HoverColor: =TextBox5.Color
+        HoverFill: =TextBox5.Fill
+        PressedBorderColor: =TextBox5.BorderColor
+        PressedColor: =TextBox5.Color
+        PressedFill: =TextBox5.Fill
+        Size: =13
+        Text: =Today()
+        Visible: =false
+        Width: =200.10
+        X: =991.15
+        Y: =15
+        ZIndex: =21
+
+    Rectangle1 As rectangle:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Fill: =RGBA(232, 234, 236, 1)
+        Height: =48
+        Width: =929
+        X: =1
+        Y: =210
+        ZIndex: =22
+
+    Filter_Status As dropdown:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        ChevronBackground: =RGBA(100, 118, 132, 1)
+        ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+        ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+        ChevronHoverBackground: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        ChevronHoverFill: =RGBA(255, 255, 255, 1)
+        Color: =RGBA(56, 67, 75, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Fill: =RGBA(243, 245, 245, 1)
+        Font: =Font.'Segoe UI'
+        Height: =35
+        HoverColor: =RGBA(255, 255, 255, 1)
+        HoverFill: =RGBA(62, 74, 83, 1)
+        Items: =["New","Triage","Monitoring","Cancelled","Completed"]
+        OnChange: =
+        PressedColor: =RGBA(255, 255, 255, 1)
+        PressedFill: =RGBA(197, 203, 207, 1)
+        SelectionColor: =RGBA(56, 67, 75, 1)
+        SelectionFill: =RGBA(202, 202, 202, 1)
+        Size: =13
+        Width: =241
+        X: =8
+        Y: =216
+        ZIndex: =23
+
+    Rectangle7_34 As rectangle:
+        BorderColor: =RGBA(70, 83, 92, 1)
+        BorderThickness: =2
+        Fill: =RGBA(56, 67, 75, 1)
+        FocusedBorderColor: =Rectangle7_34.BorderColor
+        Height: =556
+        TabIndex: =0
+        Width: =2
+        X: =930
+        Y: =211
+        ZIndex: =24
+
+    Button2_1 As button:
+        AutoDisableOnSelect: =false
+        Color: =RGBA(197, 203, 207, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Fill: =RGBA(0, 0, 0, 0)
+        FocusedBorderColor: =ColorFade(Self.Fill, -75%)
+        FontWeight: =FontWeight.Semibold
+        Height: =60
+        HoverBorderColor: =Button2_1.BorderColor
+        HoverColor: =RGBA(255, 255, 255, 1)
+        HoverFill: =Button2_1.Fill
+        OnSelect: |-
+            =Navigate(IncidentDetailsPage,ScreenTransition.Fade);
+            Set(var1,Tickets2.Selected)
+        PaddingRight: =6.67
+        PaddingTop: =6.67
+        PressedColor: =Button2_1.Color
+        PressedFill: =Button2_1.Fill
+        Size: =15
+        Text: =""
+        Width: =80.04
+        X: =1286
+        Y: =214
+        ZIndex: =25
+
+    Button2_2 As button:
+        AutoDisableOnSelect: =false
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Fill: =RGBA(0, 0, 0, 0)
+        FocusedBorderColor: =ColorFade(Self.Fill, -75%)
+        FontWeight: =FontWeight.Semibold
+        Height: =60
+        HoverBorderColor: =Button2_2.BorderColor
+        HoverColor: =RGBA(255, 255, 255, 1)
+        HoverFill: =Button2_2.Fill
+        OnSelect: |-
+            =Refresh('QHC - App Library');
+            Refresh('QHC - Critical Incident Management');
+            Notify("Refreshed")
+        PaddingRight: =6.67
+        PaddingTop: =6.67
+        PressedColor: =Button2_2.Color
+        PressedFill: =Button2_2.Fill
+        Size: =15
+        Text: =""
+        Width: =80.04
+        X: =1198
+        ZIndex: =26
+
+    Icon6 As icon.Reload:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Color: =RGBA(197, 203, 207, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Height: =38
+        Icon: =Icon.Reload
+        OnSelect: |-
+            =Refresh('QHC - App Library');
+            Refresh('QHC - Critical Incident Management');
+            Notify("Refreshed")
+        Width: =42
+        X: =1215
+        Y: =9
+        ZIndex: =27
+
+    Icon4 As icon.Edit:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Color: =RGBA(90, 106, 119, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Height: =42
+        Icon: =Icon.Edit
+        OnSelect: |-
+            =Set(LastSubmit, Tickets2.Selected.ID);
+            Navigate(IncidentDetailsPage,ScreenTransition.Fade);
+            Set(var1,Tickets2.Selected)
+        Width: =49
+        X: =1308
+        Y: =216
+        ZIndex: =28
+
+    Rectangle6_11 As rectangle:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Fill: =RGBA(219, 219, 219, 1)
+        FocusedBorderColor: =Rectangle6_11.BorderColor
+        Height: =84
+        TabIndex: =0
+        Width: =2
+        X: =271
+        Y: =114
+        ZIndex: =29
+
+    Rectangle6_12 As rectangle:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Fill: =RGBA(219, 219, 219, 1)
+        FocusedBorderColor: =Rectangle6_12.BorderColor
+        Height: =84
+        TabIndex: =0
+        Width: =2
+        X: =543
+        Y: =113
+        ZIndex: =30
+
+    Rectangle6_13 As rectangle:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Fill: =RGBA(219, 219, 219, 1)
+        FocusedBorderColor: =Rectangle6_13.BorderColor
+        Height: =85
+        TabIndex: =0
+        Width: =2
+        X: =816
+        Y: =112
+        ZIndex: =31
+
+    Rectangle6_14 As rectangle:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Fill: =RGBA(219, 219, 219, 1)
+        FocusedBorderColor: =Rectangle6_14.BorderColor
+        Height: =84
+        TabIndex: =0
+        Width: =2
+        X: =1090
+        Y: =114
+        ZIndex: =32
+
+    Rectangle6_10 As rectangle:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Fill: =RGBA(219, 219, 219, 1)
+        FocusedBorderColor: =Rectangle6_10.BorderColor
+        Height: =84
+        TabIndex: =0
+        Width: =1
+        Y: =114
+        ZIndex: =33
+
+    Label2 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(43, 52, 58, 1)
+        BorderThickness: =1
+        Color: =RGBA(243, 245, 245, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Fill: =RGBA(90, 106, 119, 1)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =12
+        Text: ="ID"
+        Width: =67
+        Y: =259
+        ZIndex: =34
+
+    Label2_1 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(43, 52, 58, 1)
+        BorderThickness: =1
+        Color: =RGBA(243, 245, 245, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Fill: =RGBA(90, 106, 119, 1)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =12
+        Text: ="Status"
+        Width: =185
+        X: =67
+        Y: =259
+        ZIndex: =35
+
+    Label2_2 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(43, 52, 58, 1)
+        BorderThickness: =1
+        Color: =RGBA(243, 245, 245, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Fill: =RGBA(90, 106, 119, 1)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =12
+        Text: ="Priority"
+        Width: =100
+        X: =252
+        Y: =259
+        ZIndex: =36
+
+    Label2_3 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(43, 52, 58, 1)
+        BorderThickness: =1
+        Color: =RGBA(243, 245, 245, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Fill: =RGBA(90, 106, 119, 1)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =12
+        Text: ="Assigned To"
+        Width: =231
+        X: =352
+        Y: =259
+        ZIndex: =37
+
+    Label2_4 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(43, 52, 58, 1)
+        BorderThickness: =1
+        Color: =RGBA(243, 245, 245, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Fill: =RGBA(90, 106, 119, 1)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =12
+        Text: ="Last Update"
+        Width: =167
+        X: =583
+        Y: =259
+        ZIndex: =38
+
+    Label2_5 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(43, 52, 58, 1)
+        BorderThickness: =1
+        Color: =RGBA(243, 245, 245, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Fill: =RGBA(90, 106, 119, 1)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =12
+        Text: ="Update Needed"
+        Width: =178
+        X: =750
+        Y: =259
+        ZIndex: =39
+
+    Icon1_5 As icon.Save:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Color: =RGBA(56, 67, 75, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Height: =40
+        Icon: =Icon.Mail
+        OnSelect: |-
+            =Set(var1,Tickets2.Selected);
+            Navigate(CommunicationPage,Fade)
+        Tooltip: ="Send Alert"
+        Width: =50
+        X: =1243
+        Y: =218
+        ZIndex: =40
+
+    Button1 As button:
+        BorderThickness: =0
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Fill: =RGBA(62, 74, 83, 1)
+        FontWeight: =FontWeight.Semibold
+        Height: =39
+        HoverColor: =RGBA(255, 255, 255, 1)
+        HoverFill: =
+        OnSelect: |-
+            =Launch("https://web.webex.com/spaces/aHR0cHM6Ly9jb252LWEud2J4Mi5jb20vY29udmVyc2F0aW9uL2FwaS92MS9jb252ZXJzYXRpb25zLzUzNjVhZDcwLTA4ZDktMTFlYi1iNmIwLWE1ZTc0MGEzODEzOQ==")
+        Size: =12
+        Text: ="Webex"
+        Width: =114
+        X: =8
+        Y: =66
+        ZIndex: =41
+
+    Button1_1 As button:
+        BorderThickness: =0
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Fill: =RGBA(62, 74, 83, 1)
+        FontWeight: =FontWeight.Semibold
+        Height: =39
+        HoverColor: =RGBA(255, 255, 255, 1)
+        HoverFill: =
+        OnSelect: |-
+            =Launch("https://app.zipwhip.com/messaging")
+        Size: =12
+        Text: ="ZipWhip"
+        Visible: =false
+        Width: =102
+        X: =369
+        Y: =66
+        ZIndex: =42
+
+    Label7 As label:
+        Align: =Align.Right
+        BorderColor: =RGBA(197, 203, 207, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Height: =47
+        Size: =13
+        Text: ="v174.8"
+        Width: =77
+        X: =1058
+        Y: =11
+        ZIndex: =43
+
+    Button1_4 As button:
+        BorderThickness: =0
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Fill: =RGBA(62, 74, 83, 1)
+        FontWeight: =FontWeight.Semibold
+        Height: =39
+        HoverColor: =RGBA(255, 255, 255, 1)
+        HoverFill: =
+        OnSelect: =NewForm(Form3);Navigate('New App Page', ScreenTransition.None)
+        Size: =12
+        Text: ="Add App"
+        Width: =102
+        X: =133
+        Y: =66
+        ZIndex: =44
+
+    Rectangle7_33 As rectangle:
+        BorderColor: =RGBA(197, 203, 207, 1)
+        BorderThickness: =2
+        Fill: =RGBA(56, 67, 75, 1)
+        FocusedBorderColor: =Rectangle7_33.BorderColor
+        Height: =1
+        TabIndex: =0
+        Width: =1364
+        X: =2
+        Y: =109
+        ZIndex: =45
+
+    Button1_5 As button:
+        BorderThickness: =0
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Fill: =RGBA(62, 74, 83, 1)
+        FontWeight: =FontWeight.Semibold
+        Height: =39
+        HoverColor: =RGBA(255, 255, 255, 1)
+        HoverFill: =
+        OnSelect: =Navigate(PowerBiPage,Fade)
+        Size: =12
+        Text: ="PowerBi"
+        Width: =102
+        X: =252
+        Y: =67
+        ZIndex: =46
+
+    grpPopup As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =52
+
+        Rectangle2 As rectangle:
+            BorderColor: =RGBA(197, 203, 207, 1)
+            Fill: =RGBA(204, 231, 246, .8)
+            Height: =768
+            Visible: =varShowPopup
+            Width: =1366
+            ZIndex: =48
+
+        Label4 As label:
+            Align: =Align.Center
+            BorderColor: =RGBA(197, 203, 207, 1)
+            Color: =RGBA(255, 51, 51, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FontWeight: =FontWeight.Semibold
+            Height: =237
+            Size: =25
+            Text: ="Are you sure you want to delete incident " & Tickets2.Selected.ID &"? "
+            Visible: =varShowPopup
+            Width: =719
+            X: =336
+            Y: =252
+            ZIndex: =49
+
+        BtnNo As button:
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            Fill: =RGBA(100, 118, 132, 1)
+            FontWeight: =FontWeight.Semibold
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+            OnSelect: |-
+                =UpdateContext({varShowPopup:false})
+            Size: =15
+            Text: ="Cancel"
+            Visible: =varShowPopup
+            X: =725
+            Y: =469
+            ZIndex: =50
+
+        BtnYes As button:
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            Fill: =RGBA(100, 118, 132, 1)
+            FontWeight: =FontWeight.Semibold
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+            OnSelect: |-
+                =RemoveIf('QHC - Critical Incident Management',ID = Tickets2.Selected.ID)
+                ;Refresh('QHC - Critical Incident Management');UpdateContext({varShowPopup:false})
+            Size: =15
+            Text: ="Yes"
+            Visible: =varShowPopup
+            X: =498
+            Y: =469
+            ZIndex: =51
+

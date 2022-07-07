@@ -1,0 +1,17 @@
+[
+  {
+    "ApiId": "/providers/microsoft.powerapps/apis/shared_excel",
+    "CdpRevision": {
+      "BaseUrl": "/",
+      "LastChangedTimeString": "2021-09-30T16:51:38.3040000Z",
+      "RevisionNumber": 1
+    },
+    "ConnectedDataSourceInfoNameMapping": {},
+    "DatasetName": "b!Ls90zie640igNSKTKrilkWlAbEiTK9JAhNcG5yOVI47_NEzHirvuS6oOOq7UWKwd.01IZYOITACUUTAEUUEQZELKMZDFQ3ZPLJH",
+    "EncodeDataset": true,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "Name": "TicketTypes",
+    "Type": "ConnectedDataSourceInfo"
+  }
+]
